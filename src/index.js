@@ -2,14 +2,23 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-//
+// Axios
+import axios from 'axios';
+
+// Components
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 
 // ----------------------------------------------------------------------
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Setting Default Headers
+const API_URL = 'http://localhost:5000/api/';
+const LS_TOKEN = JSON.parse(localStorage.getItem('emap-auth')).state.token;
+
+axios.defaults.baseURL = API_URL;
+axios.defaults.headers.common['auth-token'] = LS_TOKEN;
 
 root.render(
   <HelmetProvider>

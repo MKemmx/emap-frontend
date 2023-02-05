@@ -33,6 +33,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     minHeight: HEADER_DESKTOP,
     padding: theme.spacing(0, 5),
+    background: '#F4F4F4',
   },
 }));
 
@@ -57,7 +58,7 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
 
-        <Searchbar />
+        {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack
@@ -68,8 +69,8 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <LanguagePopover />
-          <NotificationsPopover />
+          {/* <LanguagePopover /> */}
+          {/* <NotificationsPopover /> */}
           <AccountPopover />
         </Stack>
       </StyledToolbar>

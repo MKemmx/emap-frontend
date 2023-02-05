@@ -2,7 +2,6 @@
 import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
-
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
@@ -17,24 +16,44 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
-    title: 'product',
-    path: '/dashboard/products',
-    icon: icon('ic_cart'),
+    title: 'event',
+    path: '/dashboard/event',
+    icon: icon('ic_user'),
   },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
+    title: 'feedback',
+    path: '/dashboard/feedback',
+    icon: icon('ic_user'),
   },
   {
-    title: 'login',
-    path: '/login',
-    icon: icon('ic_lock'),
+    title: 'building',
+    path: '/dashboard/building',
+    icon: icon('ic_user'),
   },
   {
-    title: 'Not found',
-    path: '/404',
-    icon: icon('ic_disabled'),
+    title: 'building coordinate',
+    path: '/dashboard/building-coordinate',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'room',
+    path: '/dashboard/room',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'room coordinate',
+    path: '/dashboard/room-coordinate',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Audit Trails',
+    path: '/dashboard/audit-trail',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'Map',
+    path: '/dashboard/map',
+    icon: icon('ic_user'),
   },
 ];
 

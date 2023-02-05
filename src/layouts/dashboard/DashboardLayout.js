@@ -1,10 +1,14 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+
 // @mui
 import { styled } from '@mui/material/styles';
-//
+// Components
 import Header from './header';
 import Nav from './nav';
+
+// Stores
+import { useLoginStore } from '../../store/loginStore';
 
 // ----------------------------------------------------------------------
 
@@ -31,14 +35,22 @@ const Main = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
 export default function DashboardLayout() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
+  // Auth States
+  const { isAuthenticated } = useLoginStore((state) => state);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated]);
 
   return (
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />
-
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
       <Main>
