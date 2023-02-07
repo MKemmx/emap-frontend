@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // Setting Default Headers
 const API_URL = 'http://localhost:5000/api/';
 const LS_TOKEN = JSON.parse(localStorage.getItem('emap-auth')).state.token;
-
+// Adding Defaults
 axios.defaults.baseURL = API_URL;
 axios.defaults.headers.common['auth-token'] = LS_TOKEN;
 

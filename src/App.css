@@ -10,3 +10,12 @@
 .css-1yi9dni-MuiDataGrid-root .MuiDataGrid-cell:focus {
   outline: none;
 }
+
+.css-1yi9dni-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
+.css-1yi9dni-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+  outline: none;
+}
+
+.MuiDataGrid-columnHeader .MuiDataGrid-columnHeader--sortable .MuiDataGrid-columnHeader--moving {
+  background: none;
+}

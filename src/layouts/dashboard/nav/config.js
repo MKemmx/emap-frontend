@@ -16,6 +16,40 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
+    title: 'Building Management',
+    path: '#',
+    icon: icon('ic_user'),
+    children: [
+      {
+        title: 'building',
+        path: '/dashboard/building',
+        icon: icon('ic_user'),
+      },
+      {
+        title: 'building-coordinates',
+        path: '/dashboard/building-coordinate',
+        icon: icon('ic_user'),
+      },
+    ],
+  },
+  {
+    title: 'Room Management',
+    path: '#',
+    icon: icon('ic_user'),
+    children: [
+      {
+        title: 'Room',
+        path: '/dashboard/room',
+        icon: icon('ic_user'),
+      },
+      {
+        title: 'room-coordinate',
+        path: '/dashboard/building-coordinate',
+        icon: icon('ic_user'),
+      },
+    ],
+  },
+  {
     title: 'event',
     path: '/dashboard/event',
     icon: icon('ic_user'),
@@ -23,26 +57,6 @@ const navConfig = [
   {
     title: 'feedback',
     path: '/dashboard/feedback',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'building',
-    path: '/dashboard/building',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'building coordinate',
-    path: '/dashboard/building-coordinate',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'room',
-    path: '/dashboard/room',
-    icon: icon('ic_user'),
-  },
-  {
-    title: 'room coordinate',
-    path: '/dashboard/room-coordinate',
     icon: icon('ic_user'),
   },
   {
