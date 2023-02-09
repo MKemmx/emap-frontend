@@ -18,6 +18,8 @@ const loginStore = (set, get) => ({
       });
 
       const { data } = await axios.post('/auth/admin-login', loginData);
+      axios.defaults.headers.common['auth-token'] = data.data.token;
+
       set({
         ...get(),
         user: data.data.admin,

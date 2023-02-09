@@ -1,7 +1,8 @@
 export const INITIAL_STATE = {
-  userName: '',
-  firstName: '',
+  userName: 'Samle',
+  firstName: 'Kemm',
   middleName: '',
   lastName: '',
   email: '',
+  password: '',
 };
