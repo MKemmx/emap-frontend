@@ -2,6 +2,12 @@
   --emap-primary: #900303;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .sidebar {
   background-color: var(--emap-primary);
 }

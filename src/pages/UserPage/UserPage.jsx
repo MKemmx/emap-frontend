@@ -29,7 +29,7 @@ import UserPageModal from './UserPageModal';
 export default function UserPage() {
   const [pageSize, setPageSize] = useState(10);
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText } = useFetch('admin');
+  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('admin');
 
   // Modal State
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -41,7 +41,7 @@ export default function UserPage() {
     setEditData(null);
   };
 
-  // Handle Edit Data
+  // Handle Edit Data and Show Edit Modal
   const handleEditData = (data) => {
     setEditData(data);
   };
@@ -126,7 +126,12 @@ export default function UserPage() {
   return (
     <>
       {(openAddModal || editData !== null) && (
-        <UserPageModal closeModal={closeModal} openAddModal={openAddModal} editData={editData} />
+        <UserPageModal
+          closeModal={closeModal}
+          openAddModal={openAddModal}
+          editData={editData}
+          reFetchData={reFetchData}
+        />
       )}
       <Helmet>
         <title> User </title>

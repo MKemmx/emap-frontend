@@ -8,6 +8,7 @@ const useFetch = (urlLink) => {
   const [loading, setLoading] = useState();
   const [error, setError] = useState();
 
+  // Fetch Data
   const fetchedData = async (apiRoute) => {
     try {
       setLoading(true);
@@ -20,7 +21,20 @@ const useFetch = (urlLink) => {
     }
   };
 
-  //   Handle Search
+  // Re-fetch data
+  const reFetchData = async (apiRoute) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(apiRoute);
+      setMainData(data[urlLink]);
+      setLoading(false);
+    } catch (error) {
+      setError(error.response.data.msg);
+      setLoading(false);
+    }
+  };
+
+  // Handle Search
   const handleSearch = (e) => {
     const searchedText = e.target.value.toLowerCase();
     setSearchedText(searchedText);
@@ -62,6 +76,7 @@ const useFetch = (urlLink) => {
     error,
     handleSearch,
     searchedText,
+    reFetchData,
   };
 };
 

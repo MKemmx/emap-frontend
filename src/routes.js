@@ -24,6 +24,9 @@ import AuditTrailPage from './pages/AuditTrailPage/AuditTrailPage';
 import MapPage from './pages/MapPage/MapPage';
 
 // Landing Page
+import Home from './pages/LandingPages/Home';
+import Events from './pages/LandingPages/Events';
+import About from './pages/LandingPages/About';
 
 // ----------------------------------------------------------------------
 export default function Router() {
@@ -55,9 +58,13 @@ export default function Router() {
     {
       element: <LandingPageLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/home" />, index: true },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
+        { path: 'home', element: <Home /> },
+        { path: 'map', element: <MapPage /> },
+        { path: 'events', element: <Events /> },
+        { path: 'about', element: <About /> },
       ],
     },
     {
