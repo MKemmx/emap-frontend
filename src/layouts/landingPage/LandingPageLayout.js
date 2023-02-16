@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Container,
   Button,
-  Typography,
   Toolbar,
   ListItemText,
   ListItemButton,
@@ -17,7 +16,7 @@ import {
   AppBar,
 } from '@mui/material/';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 const navItems = ['Home', 'Events', 'About', 'Map'];
@@ -26,8 +25,14 @@ function LandingPageLayout(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleChangeRoute = (route) => {
+    navigate(`/${route}`);
   };
 
   const drawer = (
@@ -42,7 +47,13 @@ function LandingPageLayout(props) {
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem
+            onClick={() => {
+              handleChangeRoute(item);
+            }}
+            key={item}
+            disablePadding
+          >
             <ListItemButton sx={{ textAlign: 'center' }}>
               <ListItemText primary={item} />
             </ListItemButton>
@@ -73,7 +84,13 @@ function LandingPageLayout(props) {
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
-                <Button key={item} sx={{ color: '#fff' }}>
+                <Button
+                  onClick={(e) => {
+                    handleChangeRoute(item);
+                  }}
+                  key={item}
+                  sx={{ color: '#fff' }}
+                >
                   {item}
                 </Button>
               ))}
@@ -92,8 +109,8 @@ function LandingPageLayout(props) {
         </Toolbar>
       </AppBar>
       {/* Content */}
-      <Box sx={{ width: '100%', background: '#f4f4f4' }}>
-        <Container sx={{ backgroundColor: 'gray' }}>
+      <Box sx={{ width: '100%', mx: 'auto' }}>
+        <Container>
           <Box component="nav">
             <Drawer
               container={container}
@@ -116,6 +133,10 @@ function LandingPageLayout(props) {
             <Outlet />
           </Box>
         </Container>
+
+        <Box sx={{ py: 2 }}>
+          <Container>&#169; 2023 eMap.</Container>
+        </Box>
       </Box>
     </Box>
   );
