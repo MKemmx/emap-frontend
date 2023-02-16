@@ -70,7 +70,7 @@ function LandingPageLayout(props) {
       <CssBaseline />
       {/* App Bar */}
       <AppBar>
-        <Toolbar sx={{ background: '#900303' }}>
+        <Toolbar sx={{ background: '#900303', height: '8vh' }}>
           <Container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box
               component="div"
@@ -129,12 +129,12 @@ function LandingPageLayout(props) {
             </Drawer>
           </Box>
 
-          <Box component="main" sx={{ px: 2, mt: '77px', height: '87vh' }}>
+          <Box component="main" sx={{ px: 2, mt: '77px', height: '85vh' }}>
             <Outlet />
           </Box>
         </Container>
 
-        <Box sx={{ py: 2 }}>
+        <Box sx={{ py: 2, background: '#900303', color: '#FFF', height: '7vh' }}>
           <Container>&#169; 2023 eMap.</Container>
         </Box>
       </Box>
