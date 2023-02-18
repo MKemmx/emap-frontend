@@ -8,7 +8,7 @@ import EventsImage from './images/Events';
 const Events = () => {
   return (
     <>
-      <Box sx={{ py: 3 }}>
+      <Box sx={{ py: 3, width: '100%' }}>
         <EventsImage />
 
         {/* Events Data */}

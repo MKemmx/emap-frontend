@@ -59,9 +59,9 @@ export default function FeedbackPage() {
           <Typography variant="h4" gutterBottom>
             Feedback
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             Add Feedback
-          </Button>
+          </Button> */}
         </Stack>
 
         <Card>

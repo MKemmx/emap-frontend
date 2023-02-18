@@ -14,10 +14,12 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 // Setting Default Headers
-const API_URL = 'http://localhost:5000/api/';
+// const API_URL_LOCAL = 'http://localhost:5000/api/';
+const API_URL_PRODUCTION = 'https://emap-back-end.onrender.com/api/';
+
 const LS_TOKEN = JSON.parse(localStorage.getItem('emap-auth')).state.token;
-// Adding Defaults
-axios.defaults.baseURL = API_URL;
+//! Adding Axios Defaults
+axios.defaults.baseURL = API_URL_PRODUCTION;
 axios.defaults.headers.common['auth-token'] = LS_TOKEN;
 
 root.render(

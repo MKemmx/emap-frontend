@@ -82,7 +82,7 @@ export default function LoginForm() {
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 2 }}>
         {/* <Checkbox name="remember" label="Remember me" /> */}
-        <Link variant="subtitle2" underline="hover">
+        <Link color="primary.light" variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
       </Stack>

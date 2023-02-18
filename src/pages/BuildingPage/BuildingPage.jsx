@@ -2,8 +2,19 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid } from '@mui/x-data-grid';
 // @mui
-import { Card, Stack, Button, Container, Typography, Box, TextField, InputAdornment } from '@mui/material';
-import { AiOutlineSearch } from 'react-icons/ai';
+import {
+  Card,
+  Stack,
+  Button,
+  Container,
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 // Hooks
 import useFetch from '../../hooks/useFetch';
@@ -12,64 +23,129 @@ import useFetch from '../../hooks/useFetch';
 import Iconify from '../../components/iconify';
 import BuildingImages from './BuildingImages';
 
-// ----------------------------------------------------------------------
-const columns = [
-  {
-    field: '_id',
-    headerName: 'ID',
-    // flex: 1,
-    minWidth: 50,
-  },
-  {
-    field: 'name',
-    headerName: 'Name',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'description',
-    headerName: 'Description',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'marker',
-    headerName: 'Marker Color',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'images',
-    headerName: 'Building Images',
-    minWidth: 150,
-    flex: 1,
-    renderCell: (params) => <BuildingImages params={params} />,
-    editable: false,
-  },
-];
+// Modal
+import BuildingPageModal from './BuildingPageModal/BuildingPageModal';
 
 // ----------------------------------------------------------------------
 export default function BuildingPage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText } = useFetch('building');
+  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('building');
+
+  // Modal State
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  // Closing Modal Function
+  const closeModal = () => {
+    setOpenAddModal(false);
+    setEditData(null);
+  };
+
+  // Handle Edit Data and Show Edit Modal
+  const handleEditData = (data) => {
+    setEditData(data);
+  };
+
+  // ----------------------------------------------------------------------
+  const columns = [
+    {
+      field: '_id',
+      headerName: 'ID',
+      minWidth: 50,
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'description',
+      headerName: 'Description',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'marker',
+      headerName: 'Marker Color',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'images',
+      headerName: 'Building Images',
+      minWidth: 300,
+      flex: 1,
+      renderCell: (params) => <BuildingImages params={params} />,
+      editable: false,
+    },
+    {
+      field: '',
+      headerName: 'Actions',
+      minWidth: 120,
+      headerClassName: 'action-header',
+      renderCell: ({ row }) => {
+        return (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={() => {
+                  handleEditData(row);
+                }}
+              >
+                <AiOutlineEdit />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Delete">
+              <IconButton>
+                <AiOutlineDelete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+  ];
 
   return (
     <>
+      {(openAddModal || editData !== null) && (
+        <BuildingPageModal
+          closeModal={closeModal}
+          openAddModal={openAddModal}
+          editData={editData}
+          reFetchData={reFetchData}
+        />
+      )}
+
       <Helmet>
         <title> Building </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
+          <Typography sx={{ mb: 0 }} variant="h4" gutterBottom>
             Building
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            onClick={() => {
+              setOpenAddModal(true);
+            }}
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             Add Building
           </Button>
         </Stack>
@@ -94,6 +170,7 @@ export default function BuildingPage() {
 
           <Box sx={{ height: 550 }}>
             <DataGrid
+              rowHeight={220}
               loading={loading}
               getRowId={(row) => row._id}
               density="comfortable"

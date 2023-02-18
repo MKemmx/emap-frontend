@@ -12,6 +12,7 @@ const HomeBannerImage = () => {
         }}
       />
       <svg
+        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         className="animated"
         id="freepik_stories-directions"
         xmlns="http://www.w3.org/2000/svg"

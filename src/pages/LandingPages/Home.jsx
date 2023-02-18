@@ -1,43 +1,64 @@
 import React from 'react';
 
-import { Button, Box } from '@mui/material/';
-import { homeStyle } from './landingPageStyle.ts';
+import { Button, Box, Typography } from '@mui/material/';
+import { useTheme } from '@mui/material/styles';
+
+// import { homeStyle } from './landingPageStyle.ts';
 import HomeBannerImage from './images/HomeImage';
 
 const Home = () => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
-        ...homeStyle,
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        alignItems: 'center',
+        height: '100%',
+        [theme.breakpoints.down('md')]: {
+          gridTemplateColumns: '1fr',
+        },
       }}
     >
-      <Box
-        sx={{
-          flex: 1,
-        }}
-      >
-        <h1
-          style={{
-            marginBottom: '25px',
+      <Box>
+        <Typography
+          variant="h3"
+          sx={{
+            marginBottom: '5px',
+            [theme.breakpoints.down('md')]: {
+              marginBottom: '5px',
+            },
           }}
         >
           CAMPUS ON YOUR HANDS
-        </h1>
-        <p
-          style={{
-            marginBottom: '25px',
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            marginBottom: '15px',
+            [theme.breakpoints.down('md')]: {
+              marginBottom: '5px',
+            },
           }}
         >
           An app wherein EVSU students, employees, and visitors can track their location, browse over the directories of
           the evsu main campus and trace possible routes to their destination inside the university.
-        </p>
+        </Typography>
         <Button style={{ background: '#900303' }} variant="contained">
           Download
         </Button>
       </Box>
       <Box
         sx={{
-          flex: 1,
+          [theme.breakpoints.down('md')]: {
+            width: '500px',
+            marginInline: 'auto',
+          },
+          [theme.breakpoints.down('sm')]: {
+            width: '95%',
+            marginInline: 'auto',
+          },
         }}
       >
         <HomeBannerImage />

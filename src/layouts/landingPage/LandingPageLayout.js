@@ -129,12 +129,23 @@ function LandingPageLayout(props) {
             </Drawer>
           </Box>
 
-          <Box component="main" sx={{ px: 2, mt: '77px', height: '85vh' }}>
+          <Box
+            component="main"
+            sx={{
+              px: 2,
+              mt: '77px',
+              mb: 2,
+              minHeight: '85vh',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <Outlet />
           </Box>
         </Container>
 
-        <Box sx={{ py: 2, background: '#900303', color: '#FFF', height: '7vh' }}>
+        <Box sx={{ py: 2, background: '#900303', color: '#FFF', height: '7vh', display: 'flex', alignItems: 'center' }}>
           <Container>&#169; 2023 eMap.</Container>
         </Box>
       </Box>

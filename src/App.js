@@ -1,3 +1,6 @@
+// Toastify
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 // routes
 import Router from './routes';
 // theme
@@ -8,12 +11,14 @@ import { StyledChart } from './components/chart';
 
 // Custom CSS
 import './App.css';
+// Map GL
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // ----------------------------------------------------------------------
 export default function App() {
   return (
     <ThemeProvider>
+      <ToastContainer />
       <ScrollToTop />
       <StyledChart />
       <Router />

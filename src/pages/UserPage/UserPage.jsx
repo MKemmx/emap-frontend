@@ -88,39 +88,39 @@ export default function UserPage() {
       flex: 1,
       editable: false,
     },
-    {
-      field: '',
-      headerName: 'Actions',
-      minWidth: 110,
-      headerClassName: 'action-header',
-      renderCell: ({ row }) => {
-        return (
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            <Tooltip title="Edit">
-              <IconButton
-                onClick={() => {
-                  handleEditData(row);
-                }}
-              >
-                <AiOutlineEdit />
-              </IconButton>
-            </Tooltip>
+    // {
+    //   field: '',
+    //   headerName: 'Actions',
+    //   minWidth: 110,
+    //   headerClassName: 'action-header',
+    //   renderCell: ({ row }) => {
+    //     return (
+    //       <Box
+    //         sx={{
+    //           width: '100%',
+    //           display: 'flex',
+    //           alignItems: 'center',
+    //         }}
+    //       >
+    //         <Tooltip title="Edit">
+    //           <IconButton
+    //             onClick={() => {
+    //               handleEditData(row);
+    //             }}
+    //           >
+    //             <AiOutlineEdit />
+    //           </IconButton>
+    //         </Tooltip>
 
-            <Tooltip title="Delete">
-              <IconButton>
-                <AiOutlineDelete />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        );
-      },
-    },
+    //         <Tooltip title="Delete">
+    //           <IconButton>
+    //             <AiOutlineDelete />
+    //           </IconButton>
+    //         </Tooltip>
+    //       </Box>
+    //     );
+    //   },
+    // },
   ];
 
   return (
@@ -139,7 +139,7 @@ export default function UserPage() {
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
+          <Typography sx={{ mb: 0 }} variant="h4" gutterBottom>
             User
           </Typography>
           <Button
@@ -180,6 +180,11 @@ export default function UserPage() {
             }}
           >
             <DataGrid
+              sx={{
+                '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
+                  outline: 'none !important',
+                },
+              }}
               loading={loading}
               getRowId={(row) => row._id}
               density="comfortable"

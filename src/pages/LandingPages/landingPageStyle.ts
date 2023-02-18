@@ -4,3 +4,7 @@ export const homeStyle = {
   alignItems: 'center',
   height: '100%',
 };
+
+export const homeTitle = {
+  marginBottom: '25px',
+};

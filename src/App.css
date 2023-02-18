@@ -1,5 +1,8 @@
+@import '~react-image-gallery/styles/css/image-gallery.css';
+
 :root {
   --emap-primary: #900303;
+  --emap-secondary: #f6c500;
 }
 
 * {
@@ -8,20 +11,52 @@
   box-sizing: border-box;
 }
 
+/* Image Thumbnail */
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  border-color: var(--emap-primary) !important;
+}
+
+.image-gallery-thumbnail .image-gallery-thumbnail-image {
+  height: 60px;
+  object-fit: cover;
+}
+
+.image-gallery-content .image-gallery-slide .image-gallery-image {
+  height: 100%;
+  max-height: 120px;
+  object-fit: cover;
+}
+
+.image-gallery-content .image-gallery-slide .image-gallery-image.isOpen {
+  max-height: calc(100vh - 80px);
+  height: 100%;
+  object-fit: contain;
+}
+
+.MuiLoadingButton-root {
+  background-color: var(--emap-primary);
+}
+
 .sidebar {
   background-color: var(--emap-primary);
 }
 
-.css-1yi9dni-MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.css-1yi9dni-MuiDataGrid-root .MuiDa.image-gallery-thumbnail .image-gallery-thumbnail-imagetaGrid-columnHeader:focus,
 .css-1yi9dni-MuiDataGrid-root .MuiDataGrid-cell:focus {
-  outline: none;
+  outline: none !important;
 }
 
 .css-1yi9dni-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
 .css-1yi9dni-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
-  outline: none;
+  outline: none !important;
 }
 
 .MuiDataGrid-columnHeader .MuiDataGrid-columnHeader--sortable .MuiDataGrid-columnHeader--moving {
   background: none;
+}
+
+.css-1n4ch0j-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
+.css-1n4ch0j-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+  outline: none !important;
 }
