@@ -11,8 +11,6 @@ import { StyledChart } from './components/chart';
 
 // Custom CSS
 import './App.css';
-// Map GL
-import 'mapbox-gl/dist/mapbox-gl.css';
 
 // ----------------------------------------------------------------------
 export default function App() {
