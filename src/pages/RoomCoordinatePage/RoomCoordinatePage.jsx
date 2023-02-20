@@ -2,55 +2,124 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid } from '@mui/x-data-grid';
 // @mui
-import { Card, Stack, Button, Container, Typography, Box, TextField, InputAdornment } from '@mui/material';
-import { AiOutlineSearch } from 'react-icons/ai';
+import {
+  Card,
+  Stack,
+  Button,
+  Container,
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
+import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 // Hooks
 import useFetch from '../../hooks/useFetch';
 
 // components
 import Iconify from '../../components/iconify';
-
-// ----------------------------------------------------------------------
-const columns = [
-  {
-    field: '_id',
-    headerName: 'ID',
-    minWidth: 50,
-  },
-  {
-    field: 'roomId.name',
-    headerName: 'Room Name',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-    renderCell: ({ row }) => row.roomId.name,
-  },
-  {
-    field: 'longitude',
-    headerName: 'Longitude',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'latitude',
-    headerName: 'Latitude',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-];
+import RoomCoordinatePageModal from './RoomCoordinatePageModal';
 
 // ----------------------------------------------------------------------
 export default function RoomCoordinatePage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText } = useFetch('roomCoordinate');
+  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('roomCoordinate');
+
+  // Modal State
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  // Closing Modal Function
+  const closeModal = () => {
+    setOpenAddModal(false);
+    setEditData(null);
+  };
+
+  // Handle Edit Data and Show Edit Modal
+  const handleEditData = (data) => {
+    setEditData(data);
+  };
+
+  // Columns
+  const columns = [
+    {
+      field: '_id',
+      headerName: 'ID',
+      minWidth: 50,
+    },
+    {
+      field: 'roomId.name',
+      headerName: 'Room Name',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+      renderCell: ({ row }) => row.roomId.name,
+    },
+    {
+      field: 'longitude',
+      headerName: 'Longitude',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'latitude',
+      headerName: 'Latitude',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: '',
+      headerName: 'Actions',
+      minWidth: 120,
+      headerClassName: 'action-header',
+      renderCell: ({ row }) => {
+        return (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={() => {
+                  handleEditData(row);
+                }}
+              >
+                <AiOutlineEdit />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Delete">
+              <IconButton>
+                <AiOutlineDelete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+  ];
 
   return (
     <>
+      {(openAddModal || editData !== null) && (
+        <RoomCoordinatePageModal
+          closeModal={closeModal}
+          openAddModal={openAddModal}
+          editData={editData}
+          reFetchData={reFetchData}
+        />
+      )}
+
       <Helmet>
         <title> Room Coordinate </title>
       </Helmet>
@@ -60,7 +129,13 @@ export default function RoomCoordinatePage() {
           <Typography variant="h4" gutterBottom>
             Room Coordinate
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            onClick={() => {
+              setOpenAddModal(true);
+            }}
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             Add Room Coordinate
           </Button>
         </Stack>

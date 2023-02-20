@@ -8,6 +8,8 @@ import { Box, Link, Drawer, Typography, Avatar } from '@mui/material';
 import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
+import { useLoginStore } from '../../../store/loginStore';
+
 // components
 import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
@@ -24,7 +26,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12),
+  backgroundColor: '#660000',
 }));
 
 // ----------------------------------------------------------------------
@@ -35,8 +37,9 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-
   const isDesktop = useResponsive('up', 'lg');
+
+  const { user } = useLoginStore((state) => state);
 
   useEffect(() => {
     if (openNav) {
@@ -60,15 +63,20 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mt: 2, mb: 4, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Box sx={{ background: '#FFF', borderRadius: '50%' }}>
+              <img
+                style={{ borderRadius: '50%', width: '35px', border: '1px #FFF solid', objectFit: 'contain' }}
+                src="http://cdn.onlinewebfonts.com/svg/img_208097.png"
+                alt="Admin Profile"
+              />
+            </Box>
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'white' }}>
-                {account.displayName}
+                {user?.firstName} {user?.middleName} {user?.lastName}
               </Typography>
-
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+              <Typography variant="body2" sx={{ color: 'white' }}>
+                Admin
               </Typography>
             </Box>
           </StyledAccount>

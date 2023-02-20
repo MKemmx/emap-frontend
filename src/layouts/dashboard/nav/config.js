@@ -44,7 +44,7 @@ const navConfig = [
       },
       {
         title: 'room-coordinate',
-        path: '/dashboard/building-coordinate',
+        path: '/dashboard/room-coordinate',
         icon: icon('ic_user'),
       },
     ],

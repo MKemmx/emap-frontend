@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 
+// React Router Dom
+import { useNavigate } from 'react-router-dom';
+
 // Store
 import { useLoginStore } from '../../../store/loginStore';
 
@@ -10,29 +13,27 @@ import { useLoginStore } from '../../../store/loginStore';
 import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
-
 const MENU_OPTIONS = [
   {
-    label: 'Home',
+    label: 'Dashboard',
     icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
+    link: 'app',
   },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
+    link: 'settings',
   },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
 
   // Store States
-  const { logout } = useLoginStore((state) => state);
+  const { logout, user } = useLoginStore((state) => state);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -40,6 +41,11 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleRoute = (routeLink) => {
+    console.log(routeLink);
+    navigate(`/dashboard/${routeLink}`);
   };
 
   return (
@@ -61,7 +67,15 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar
+          sx={{
+            background: '#900303',
+          }}
+        >
+          {user?.firstName[0].toUpperCase()}
+          {user?.lastName[0].toUpperCase()}
+        </Avatar>
+        {/* <Avatar src="https://www.pngmart.com/files/21/Admin-Profile-PNG-Isolated-Pic.png" alt="photoURL" /> */}
       </IconButton>
 
       <Popover
@@ -85,10 +99,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user?.userName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user?.email}
           </Typography>
         </Box>
 
@@ -96,7 +110,13 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
+            <MenuItem
+              onClick={() => {
+                // handleClose();
+                handleRoute(option.link);
+              }}
+              key={option.label}
+            >
               {option.label}
             </MenuItem>
           ))}

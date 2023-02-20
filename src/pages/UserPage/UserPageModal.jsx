@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 // Material UI
-import { Box, Modal, Grid, TextField, Button } from '@mui/material';
+import { Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+
 import axios from 'axios';
 
 // Sweet Alert
@@ -73,32 +75,90 @@ const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
   };
 
   return (
-    <div>
-      <Modal
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        open={alwaysOpen}
-        onClose={closeModal}
-      >
-        <Box sx={modalStyle}>
-          <Box sx={{ mb: 3, px: 2, py: 2.5, background: '#F4F4F4', display: 'flex', alignItems: 'center' }}>
-            <h3> User Modal </h3>
-          </Box>
-          <Grid sx={{ px: 2 }} container spacing={2}>
-            {Object.keys(data).map((item) => {
-              const isError = Object.prototype.hasOwnProperty.call(errors, item);
-              const errorText = errors[item] ? errors[item] : '';
-              const itemValue = data[item] ? data[item] : '';
+    // <div>
+    //   <Modal
+    //     aria-labelledby="modal-modal-title"
+    //     aria-describedby="modal-modal-description"
+    //     open={alwaysOpen}
+    //     onClose={closeModal}
+    //   >
+    //     <Box sx={modalStyle}>
+    //       <Box sx={{ mb: 3, px: 2, py: 2.5, background: '#F4F4F4', display: 'flex', alignItems: 'center' }}>
+    //         <h3> User Modal </h3>
+    //       </Box>
+    //       <Grid sx={{ px: 2 }} container spacing={2}>
+    //         {Object.keys(data).map((item) => {
+    //           const isError = Object.prototype.hasOwnProperty.call(errors, item);
+    //           const errorText = errors[item] ? errors[item] : '';
+    //           const itemValue = data[item] ? data[item] : '';
 
-              return (
-                <React.Fragment key={item}>
-                  {item === '_id' || item === 'createdAt' ? null : (
-                    <Grid item xs={12} md={6}>
+    //           return (
+    //             <React.Fragment key={item}>
+    //               {item === '_id' || item === 'createdAt' ? null : (
+    //                 <Grid item xs={12} md={6}>
+    //                   <Box>
+    //                     <TextField
+    //                       id={item}
+    //                       onChange={handleOnChange}
+    //                       label={`Enter your ${item}`}
+    //                       variant="outlined"
+    //                       fullWidth
+    //                       value={itemValue}
+    //                       error={isError}
+    //                       helperText={errorText}
+    //                     />
+    //                   </Box>
+    //                 </Grid>
+    //               )}
+    //             </React.Fragment>
+    //           );
+    //         })}
+
+    //         <Grid item xs={12}>
+    //           {loading ? (
+    //             <div> Loading... </div>
+    //           ) : (
+    //             <Button onClick={handleCreateOrUpdate} variant="contained" fullWidth>
+    //               {openAddModal ? 'Create' : 'Update '}
+    //             </Button>
+    //           )}
+    //         </Grid>
+    //       </Grid>
+    //     </Box>
+    //   </Modal>
+    // </div>
+
+    <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
+      <DialogTitle> User Modal </DialogTitle>
+      <DialogContent dividers>
+        <Grid sx={{ px: 0 }} container spacing={2}>
+          {Object.keys(data).map((item) => {
+            const isError = Object.prototype.hasOwnProperty.call(errors, item);
+            const errorText = errors[item] ? errors[item] : '';
+            const itemValue = data[item] ? data[item] : '';
+
+            // Check if desciption
+            const isDescription = item === 'description';
+
+            return (
+              <React.Fragment key={item}>
+                {item === '_id' || item === 'createdAt' ? null : (
+                  <>
+                    <Grid
+                      sx={{
+                        display: item === 'date' ? 'none' : '',
+                      }}
+                      item
+                      xs={12}
+                      md={6}
+                    >
                       <Box>
                         <TextField
+                          multiline={isDescription}
+                          minRows={8}
                           id={item}
                           onChange={handleOnChange}
-                          label={`Enter your ${item}`}
+                          label={`Enter ${item}`}
                           variant="outlined"
                           fullWidth
                           value={itemValue}
@@ -107,24 +167,20 @@ const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
                         />
                       </Box>
                     </Grid>
-                  )}
-                </React.Fragment>
-              );
-            })}
-
-            <Grid item xs={12}>
-              {loading ? (
-                <div> Loading... </div>
-              ) : (
-                <Button onClick={handleCreateOrUpdate} variant="contained" fullWidth>
-                  {openAddModal ? 'Create' : 'Update '}
-                </Button>
-              )}
-            </Grid>
-          </Grid>
-        </Box>
-      </Modal>
-    </div>
+                  </>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeModal}>Cancel</Button>
+        <LoadingButton loading={loading} variant="contained" onClick={handleCreateOrUpdate}>
+          {openAddModal ? 'Save' : 'Update '}
+        </LoadingButton>
+      </DialogActions>
+    </Dialog>
   );
 };
 

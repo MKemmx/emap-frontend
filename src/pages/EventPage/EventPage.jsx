@@ -1,56 +1,167 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid } from '@mui/x-data-grid';
 // @mui
-import { Card, Stack, Button, Container, Typography, Box, TextField, InputAdornment } from '@mui/material';
-import { AiOutlineSearch } from 'react-icons/ai';
+import {
+  Card,
+  Stack,
+  Button,
+  Container,
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  Link,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
+import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
+
+// Day JS
+import dayjs from 'dayjs';
 
 // Hooks
 import useFetch from '../../hooks/useFetch';
 
 // components
 import Iconify from '../../components/iconify';
+import EventPageModal from './EventPageModal';
 
-// ----------------------------------------------------------------------
-const columns = [
-  {
-    field: '_id',
-    headerName: 'ID',
-    // flex: 1,
-    minWidth: 50,
-  },
-  {
-    field: 'name',
-    headerName: 'Name',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'description',
-    headerName: 'Description',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'date',
-    headerName: 'Date',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-];
+const ExpandableCell = ({ value }) => {
+  const [expanded, setExpanded] = React.useState(false);
+
+  return (
+    <Box sx={{ py: 1.5 }}>
+      {expanded ? value : value.slice(0, 200)}&nbsp;
+      {value.length > 200 && (
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        <Link
+          style={{ color: '#0d6efd', textDecoration: 'none' }}
+          type="button"
+          component="button"
+          sx={{ fontSize: 'inherit' }}
+          onClick={() => setExpanded(!expanded)}
+        >
+          {/* {expanded ?  : ' view more'} */}
+
+          {expanded ? (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ marginRight: '5px' }}>view less </span>
+              <BsChevronUp />
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ marginRight: '5px' }}>view more </span>
+              <BsChevronDown />
+            </Box>
+          )}
+        </Link>
+      )}
+    </Box>
+  );
+};
 
 // ----------------------------------------------------------------------
 export default function EventPage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText } = useFetch('event');
+  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('event');
+
+  // Modal State
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  // Closing Modal Function
+  const closeModal = () => {
+    setOpenAddModal(false);
+    setEditData(null);
+  };
+
+  // Handle Edit Data and Show Edit Modal
+  const handleEditData = (data) => {
+    setEditData(data);
+  };
+
+  // ----------------------------------------------------------------------
+  const columns = [
+    {
+      field: '_id',
+      headerName: 'ID',
+      minWidth: 50,
+    },
+    {
+      field: 'date',
+      headerName: 'Date',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+      renderCell: ({ row }) => {
+        return <>{dayjs(row.date).format('L LT')}</>;
+      },
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'description',
+      headerName: 'Description',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+      renderCell: (params) => <ExpandableCell {...params} />,
+    },
+    {
+      field: '',
+      headerName: 'Actions',
+      minWidth: 110,
+      headerClassName: 'action-header',
+      renderCell: ({ row }) => {
+        return (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={() => {
+                  handleEditData(row);
+                }}
+              >
+                <AiOutlineEdit />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Delete">
+              <IconButton>
+                <AiOutlineDelete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+  ];
 
   return (
     <>
+      {(openAddModal || editData !== null) && (
+        <EventPageModal
+          closeModal={closeModal}
+          openAddModal={openAddModal}
+          editData={editData}
+          reFetchData={reFetchData}
+        />
+      )}
+
       <Helmet>
         <title> Event </title>
       </Helmet>
@@ -60,7 +171,13 @@ export default function EventPage() {
           <Typography variant="h4" gutterBottom>
             Event
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            onClick={() => {
+              setOpenAddModal(true);
+            }}
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             Add Event
           </Button>
         </Stack>
@@ -85,6 +202,8 @@ export default function EventPage() {
 
           <Box sx={{ height: 550 }}>
             <DataGrid
+              getEstimatedRowHeight={() => 100}
+              getRowHeight={() => 'auto'}
               loading={loading}
               getRowId={(row) => row._id}
               density="comfortable"

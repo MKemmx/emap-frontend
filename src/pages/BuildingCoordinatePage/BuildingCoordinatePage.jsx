@@ -2,57 +2,126 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid } from '@mui/x-data-grid';
 // @mui
-import { Card, Stack, Button, Container, Typography, Box, TextField, InputAdornment } from '@mui/material';
-import { AiOutlineSearch } from 'react-icons/ai';
+import {
+  Card,
+  Stack,
+  Button,
+  Container,
+  Typography,
+  Box,
+  TextField,
+  InputAdornment,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 // Hooks
 import useFetch from '../../hooks/useFetch';
 
 // components
 import Iconify from '../../components/iconify';
-
-// ----------------------------------------------------------------------
-const columns = [
-  {
-    field: '_id',
-    headerName: 'ID',
-    minWidth: 50,
-  },
-  {
-    field: 'buildingId.name',
-    headerName: 'Building Name',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-    renderCell: ({ row }) => {
-      return <>{row.buildingId.name}</>;
-    },
-  },
-  {
-    field: 'longitude',
-    headerName: 'Longitude',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-  {
-    field: 'latitude',
-    headerName: 'Latitude',
-    minWidth: 150,
-    flex: 1,
-    editable: false,
-  },
-];
+import BuildingCoordinateModal from './BuildingCoordinateModal/BuildingCoordinateModal';
 
 // ----------------------------------------------------------------------
 export default function BuildingCoordinatePage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText } = useFetch('buildingCoordinate');
+  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('buildingCoordinate');
+
+  // Modal State
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  // Closing Modal Function
+  const closeModal = () => {
+    setOpenAddModal(false);
+    setEditData(null);
+  };
+
+  // Handle Edit Data and Show Edit Modal
+  const handleEditData = (data) => {
+    setEditData(data);
+  };
+
+  // ----------------------------------------------------------------------
+  const columns = [
+    {
+      field: '_id',
+      headerName: 'ID',
+      minWidth: 50,
+    },
+    {
+      field: 'buildingId',
+      headerName: 'Building Name',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+      renderCell: ({ row }) => {
+        return <>{row.buildingId.name}</>;
+      },
+    },
+    {
+      field: 'longitude',
+      headerName: 'Longitude',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: 'latitude',
+      headerName: 'Latitude',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
+      field: '',
+      headerName: 'Actions',
+      minWidth: 120,
+      headerClassName: 'action-header',
+      renderCell: ({ row }) => {
+        return (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Tooltip title="Edit">
+              <IconButton
+                onClick={() => {
+                  handleEditData(row);
+                }}
+              >
+                <AiOutlineEdit />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Delete">
+              <IconButton>
+                <AiOutlineDelete />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        );
+      },
+    },
+  ];
 
   return (
     <>
+      {(openAddModal || editData !== null) && (
+        <BuildingCoordinateModal
+          closeModal={closeModal}
+          openAddModal={openAddModal}
+          editData={editData}
+          reFetchData={reFetchData}
+        />
+      )}
+
       <Helmet>
         <title> Building Coordinate </title>
       </Helmet>
@@ -62,7 +131,13 @@ export default function BuildingCoordinatePage() {
           <Typography variant="h4" gutterBottom>
             Building Coordinate
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            onClick={() => {
+              setOpenAddModal(true);
+            }}
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             Add Building Coordinate
           </Button>
         </Stack>

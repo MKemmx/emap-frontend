@@ -22,6 +22,7 @@ import RoomPage from './pages/RoomPage/RoomPage';
 import RoomCoordinatePage from './pages/RoomCoordinatePage/RoomCoordinatePage';
 import AuditTrailPage from './pages/AuditTrailPage/AuditTrailPage';
 import MapPage from './pages/MapPage/MapPage';
+import Settings from './pages/Settings/Settings';
 
 // Landing Page
 import Home from './pages/LandingPages/Home';
@@ -47,6 +48,7 @@ export default function Router() {
         { path: 'room-coordinate', element: <RoomCoordinatePage /> },
         { path: 'audit-trail', element: <AuditTrailPage /> },
         { path: 'map', element: <MapPage /> },
+        { path: 'settings', element: <Settings /> },
       ],
     },
     //! Auth Routes
