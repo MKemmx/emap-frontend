@@ -1,10 +1,8 @@
 import React from 'react';
 
 import { Box } from '@mui/material';
-import Map from 'react-map-gl';
+import Map from '!react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
-Map.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 const MapPage = () => {
   return (
