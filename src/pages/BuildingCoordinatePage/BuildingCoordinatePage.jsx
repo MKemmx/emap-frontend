@@ -28,7 +28,8 @@ export default function BuildingCoordinatePage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('buildingCoordinate');
+  const { data, loading, error, handleSearch, searchedText, reFetchData, handleDelete } =
+    useFetch('buildingCoordinate');
 
   // Modal State
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -100,7 +101,12 @@ export default function BuildingCoordinatePage() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Delete">
+            <Tooltip
+              onClick={() => {
+                handleDelete('buildingCoordinate', row._id);
+              }}
+              title="Delete"
+            >
               <IconButton>
                 <AiOutlineDelete />
               </IconButton>

@@ -28,7 +28,7 @@ export default function RoomPage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('room');
+  const { data, loading, error, handleSearch, searchedText, reFetchData, handleDelete } = useFetch('room');
 
   // Modal State
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -59,7 +59,7 @@ export default function RoomPage() {
       flex: 1,
       editable: false,
       renderCell: ({ row }) => {
-        return <>{row.buildingId.name}</>;
+        return <>{row?.buildingId?.name}</>;
       },
     },
     {
@@ -100,7 +100,12 @@ export default function RoomPage() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Delete">
+            <Tooltip
+              onClick={() => {
+                handleDelete('room', row._id);
+              }}
+              title="Delete"
+            >
               <IconButton>
                 <AiOutlineDelete />
               </IconButton>

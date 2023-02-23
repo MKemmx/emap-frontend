@@ -66,6 +66,16 @@ const useFetch = (urlLink) => {
     setFilteredData(filtered);
   };
 
+  // Handle Delete
+  const handleDelete = async (name, id) => {
+    try {
+      await axios.delete(`/${name}/${id}`);
+      await reFetchData(name);
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+  };
+
   useEffect(() => {
     fetchedData(urlLink);
   }, [urlLink]);
@@ -77,6 +87,7 @@ const useFetch = (urlLink) => {
     handleSearch,
     searchedText,
     reFetchData,
+    handleDelete,
   };
 };
 

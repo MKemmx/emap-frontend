@@ -1,27 +1,54 @@
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
+// import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import { Grid, Container, Typography, Skeleton } from '@mui/material';
+
+// Axios
+import axios from 'axios';
+
 // components
-import Iconify from '../../components/iconify';
+// import Iconify from '../../components/iconify';
+
 // sections
 import {
-  AppTasks,
-  AppNewsUpdate,
-  AppOrderTimeline,
+  // AppTasks,
+  // AppNewsUpdate,
+  // AppOrderTimeline,
+  // AppTrafficBySite,
+  // AppCurrentSubject,
+  // AppConversionRates,
+  AppWidgetSummary,
   AppCurrentVisits,
   AppWebsiteVisits,
-  AppTrafficBySite,
-  AppWidgetSummary,
-  AppCurrentSubject,
-  AppConversionRates,
 } from '../../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    // Fetch Dashboard
+    async function fetchDashboard() {
+      try {
+        setLoading(true);
+        const { data } = await axios.get('/dashboard');
+        setData(data.data);
+        console.log(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    }
+
+    fetchDashboard();
+  }, []);
 
   return (
     <>
@@ -34,82 +61,131 @@ export default function DashboardAppPage() {
           Hi, Welcome back
         </Typography>
 
-        <Grid container spacing={{ xs: 2, md: 3 }}>
-          <Grid item xs={6} sm={6} md={3}>
-            <AppWidgetSummary title="Weekly Sales" total={714000} icon={'ant-design:android-filled'} />
+        {loading ? (
+          <Grid container spacing={{ xs: 2, md: 3 }}>
+            {[...new Array(6)].map((item, index) => (
+              <Grid item xs={6} sm={6} md={4}>
+                <Skeleton variant="rounded" width="100%" height={180} />
+              </Grid>
+            ))}
+            <Grid item xs={8}>
+              <Skeleton variant="rounded" width="100%" height={300} />
+            </Grid>
+            <Grid item xs={4}>
+              <Skeleton variant="rounded" width="100%" height={300} />
+            </Grid>
           </Grid>
+        ) : (
+          <>
+            <Grid container spacing={{ xs: 2, md: 3 }}>
+              <Grid item xs={6} sm={6} md={4}>
+                <AppWidgetSummary title="Users" total={data?.adminLength} icon={'ant-design:android-filled'} />
+              </Grid>
 
-          <Grid item xs={6} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
-          </Grid>
+              <Grid item xs={6} sm={6} md={4}>
+                <AppWidgetSummary
+                  title="Buildings"
+                  total={data?.buildingLength}
+                  color="info"
+                  icon={'ant-design:apple-filled'}
+                />
+              </Grid>
 
-          <Grid item xs={6} sm={6} md={3}>
-            <AppWidgetSummary title="Item Orders" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
-          </Grid>
+              <Grid item xs={6} sm={6} md={4}>
+                <AppWidgetSummary
+                  title="Rooms"
+                  total={data?.roomLength}
+                  color="warning"
+                  icon={'ant-design:windows-filled'}
+                />
+              </Grid>
 
-          <Grid item xs={6} sm={6} md={3}>
-            <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
-          </Grid>
+              <Grid item xs={6} sm={6} md={4}>
+                <AppWidgetSummary
+                  title="Events"
+                  total={data?.eventLength}
+                  color="error"
+                  icon={'ant-design:bug-filled'}
+                />
+              </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
-            <AppWebsiteVisits
-              title="Website Visits"
-              // subheader="(+43%) than last year"
-              chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-              ]}
-              chartData={[
-                {
-                  name: 'Team A',
-                  type: 'column',
-                  fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                },
-                {
-                  name: 'Team B',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                },
-                {
-                  name: 'Team C',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
-              ]}
-            />
-          </Grid>
+              <Grid item xs={6} sm={6} md={4}>
+                <AppWidgetSummary
+                  title="Feedbacks"
+                  total={data?.feedbackLength}
+                  color="warning"
+                  icon={'ant-design:windows-filled'}
+                />
+              </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentVisits
-              title="Current Visits"
-              chartData={[
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
-              ]}
-              chartColors={[
-                theme.palette.primary.main,
-                theme.palette.info.main,
-                theme.palette.warning.main,
-                theme.palette.error.main,
-              ]}
-            />
-          </Grid>
+              <Grid item xs={6} sm={6} md={4}>
+                <AppWidgetSummary
+                  title="Audit Trails"
+                  total={data?.auditTrailLength}
+                  color="error"
+                  icon={'ant-design:bug-filled'}
+                />
+              </Grid>
 
-          {/* <Grid item xs={12} md={6} lg={8}>
+              <Grid item xs={12} md={6} lg={8}>
+                <AppWebsiteVisits
+                  title="Download Analytics"
+                  // subheader="(+43%) than last year"
+                  chartLabels={[
+                    '01/01/2023',
+                    '02/01/2023',
+                    '03/01/2023',
+                    '04/01/2023',
+                    '05/01/2023',
+                    '06/01/2023',
+                    '07/01/2023',
+                    '08/01/2023',
+                    '09/01/2023',
+                    '10/01/2023',
+                    '11/01/2023',
+                  ]}
+                  chartData={[
+                    {
+                      name: 'Team A',
+                      type: 'column',
+                      fill: 'solid',
+                      data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
+                    },
+                    {
+                      name: 'Team B',
+                      type: 'area',
+                      fill: 'gradient',
+                      data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
+                    },
+                    {
+                      name: 'Team C',
+                      type: 'line',
+                      fill: 'solid',
+                      data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                    },
+                  ]}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6} lg={4}>
+                <AppCurrentVisits
+                  title="Current Visits"
+                  chartData={[
+                    { label: 'America', value: 4344 },
+                    { label: 'Asia', value: 5435 },
+                    { label: 'Europe', value: 1443 },
+                    { label: 'Africa', value: 4443 },
+                  ]}
+                  chartColors={[
+                    theme.palette.primary.main,
+                    theme.palette.info.main,
+                    theme.palette.warning.main,
+                    theme.palette.error.main,
+                  ]}
+                />
+              </Grid>
+
+              {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
               title="Conversion Rates"
               subheader="(+43%) than last year"
@@ -128,7 +204,7 @@ export default function DashboardAppPage() {
             />
           </Grid> */}
 
-          {/* <Grid item xs={12} md={6} lg={4}>
+              {/* <Grid item xs={12} md={6} lg={4}>
             <AppCurrentSubject
               title="Current Subject"
               chartLabels={['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math']}
@@ -141,7 +217,7 @@ export default function DashboardAppPage() {
             />
           </Grid> */}
 
-          <Grid item xs={12} md={6} lg={8}>
+              {/* <Grid item xs={12} md={6} lg={8}>
             <AppNewsUpdate
               title="News Update"
               list={[...Array(5)].map((_, index) => ({
@@ -198,9 +274,9 @@ export default function DashboardAppPage() {
                 },
               ]}
             />
-          </Grid>
+          </Grid> */}
 
-          {/* <Grid item xs={12} md={6} lg={8}>
+              {/* <Grid item xs={12} md={6} lg={8}>
             <AppTasks
               title="Tasks"
               list={[
@@ -212,7 +288,9 @@ export default function DashboardAppPage() {
               ]}
             />
           </Grid> */}
-        </Grid>
+            </Grid>
+          </>
+        )}
       </Container>
     </>
   );

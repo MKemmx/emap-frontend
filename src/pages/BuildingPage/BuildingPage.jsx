@@ -31,7 +31,7 @@ export default function BuildingPage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('building');
+  const { data, loading, error, handleSearch, searchedText, reFetchData, handleDelete } = useFetch('building');
 
   // Modal State
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -90,6 +90,8 @@ export default function BuildingPage() {
       minWidth: 120,
       headerClassName: 'action-header',
       renderCell: ({ row }) => {
+        console.log(row);
+
         return (
           <Box
             sx={{
@@ -108,7 +110,12 @@ export default function BuildingPage() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Delete">
+            <Tooltip
+              onClick={() => {
+                handleDelete('building', row._id);
+              }}
+              title="Delete"
+            >
               <IconButton>
                 <AiOutlineDelete />
               </IconButton>

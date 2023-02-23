@@ -67,7 +67,7 @@ export default function EventPage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('event');
+  const { data, loading, error, handleSearch, searchedText, reFetchData, handleDelete } = useFetch('event');
 
   // Modal State
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -140,7 +140,12 @@ export default function EventPage() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Delete">
+            <Tooltip
+              onClick={() => {
+                handleDelete('event', row._id);
+              }}
+              title="Delete"
+            >
               <IconButton>
                 <AiOutlineDelete />
               </IconButton>

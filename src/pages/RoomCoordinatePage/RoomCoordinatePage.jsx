@@ -28,7 +28,7 @@ export default function RoomCoordinatePage() {
   const [pageSize, setPageSize] = useState(10);
 
   // Hook Data
-  const { data, loading, error, handleSearch, searchedText, reFetchData } = useFetch('roomCoordinate');
+  const { data, loading, error, handleSearch, searchedText, reFetchData, handleDelete } = useFetch('roomCoordinate');
 
   // Modal State
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -58,7 +58,7 @@ export default function RoomCoordinatePage() {
       minWidth: 150,
       flex: 1,
       editable: false,
-      renderCell: ({ row }) => row.roomId.name,
+      renderCell: ({ row }) => row?.roomId?.name,
     },
     {
       field: 'longitude',
@@ -98,7 +98,12 @@ export default function RoomCoordinatePage() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="Delete">
+            <Tooltip
+              onClick={() => {
+                handleDelete('roomCoordinate', row?._id);
+              }}
+              title="Delete"
+            >
               <IconButton>
                 <AiOutlineDelete />
               </IconButton>
