@@ -71,6 +71,7 @@
     "simplebar-react": "^2.4.3",
     "sweetalert2": "^11.7.1",
     "web-vitals": "^3.0.3",
+    "worker-loader": "^3.0.8",
     "zustand": "^4.3.2"
   },
   "devDependencies": {
