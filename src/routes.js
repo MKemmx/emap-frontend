@@ -32,6 +32,19 @@ import About from './pages/LandingPages/About';
 // ----------------------------------------------------------------------
 export default function Router() {
   const routes = useRoutes([
+    //! Emap Home Landing Page
+    {
+      element: <LandingPageLayout />,
+      children: [
+        { path: 'map', element: <MapPage /> },
+        { element: <Navigate to="/home" />, index: true },
+        { path: '404', element: <Page404 /> },
+        { path: '*', element: <Navigate to="/404" /> },
+        { path: 'home', element: <Home /> },
+        { path: 'events', element: <Events /> },
+        { path: 'about', element: <About /> },
+      ],
+    },
     //! Admin Routes
     {
       path: '/dashboard',
@@ -55,19 +68,6 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
-    },
-    //! Emap Home Landing Page
-    {
-      element: <LandingPageLayout />,
-      children: [
-        { element: <Navigate to="/home" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
-        { path: 'home', element: <Home /> },
-        { path: 'map', element: <MapPage /> },
-        { path: 'events', element: <Events /> },
-        { path: 'about', element: <About /> },
-      ],
     },
     {
       path: '*',
