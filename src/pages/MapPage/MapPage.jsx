@@ -6,8 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MapPage = () => {
   return (
-    <Box sx={{ width: '100%', height: '100%', background: 'red' }}>
-      asdasdas
+    <Box py={5} sx={{ width: '100%', height: '80vh' }}>
       <Map
         mapboxAccessToken="pk.eyJ1Ijoia2NwaGlsaXAiLCJhIjoiY2w3Njk4NmZwMXltMTNucng1czdhMGo0aiJ9.rsKrbG0IARxPZrUfSqSrKA"
         initialViewState={{

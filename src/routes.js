@@ -36,13 +36,13 @@ export default function Router() {
     {
       element: <LandingPageLayout />,
       children: [
-        { path: 'map', element: <MapPage /> },
         { element: <Navigate to="/home" />, index: true },
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
         { path: 'home', element: <Home /> },
         { path: 'events', element: <Events /> },
         { path: 'about', element: <About /> },
+        { path: 'map', element: <MapPage /> },
+        { path: '404', element: <Page404 /> },
+        { path: '*', element: <Navigate to="/404" /> },
       ],
     },
     //! Admin Routes

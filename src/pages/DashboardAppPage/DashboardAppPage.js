@@ -39,7 +39,7 @@ export default function DashboardAppPage() {
         setLoading(true);
         const { data } = await axios.get('/dashboard');
         setData(data.data);
-        console.log(data.data);
+        // console.log(data.data);
         setLoading(false);
       } catch (error) {
         console.log(error);
