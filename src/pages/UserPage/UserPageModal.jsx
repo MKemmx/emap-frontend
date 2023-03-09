@@ -1,28 +1,21 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 // Material UI
-import { Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-
 import axios from 'axios';
 
-// Sweet Alert
-import Swal from 'sweetalert2';
+// React tostify
+import { toast } from 'react-toastify';
 
 // Initial State
 import { INITIAL_STATE } from './initialState';
-
-// Hooks
-import useFetch from '../../hooks/useFetch';
-
-// styles
-import { modalStyle } from './styles';
 
 const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
   // Always showing
   const alwaysOpen = true;
   const [data, setData] = useState(editData === null ? INITIAL_STATE : editData);
   const [loading, setLoading] = useState(false);
+  const [errorResponse, setErrorResponse] = useState(null);
 
   // Error State
   const [errors, setError] = useState({});
@@ -51,7 +44,7 @@ const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
 
     // Check if input has any errors
     if (Object.keys(errorObject).length >= 1) {
-      return Swal.fire('Error', `input fields has some errors`, 'error');
+      return setErrorResponse('Input fields has some errors');
     }
 
     // Handling Create or Update request
@@ -64,10 +57,18 @@ const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
       });
       await reFetchData('admin');
       closeModal();
-      Swal.fire('Success', `${data?.firstName} has been ${openAddModal ? 'added' : 'updated'}`, 'success');
+      toast.success(`${data?.firstName} has been ${openAddModal ? 'added' : 'updated'}`, {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     } catch (error) {
-      console.log(error.response.data.msg);
-      Swal.fire('Fail', `something went wrong`, 'error');
+      setErrorResponse(error.response.data.msg);
     } finally {
       setLoading(false);
     }
@@ -75,63 +76,16 @@ const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
   };
 
   return (
-    // <div>
-    //   <Modal
-    //     aria-labelledby="modal-modal-title"
-    //     aria-describedby="modal-modal-description"
-    //     open={alwaysOpen}
-    //     onClose={closeModal}
-    //   >
-    //     <Box sx={modalStyle}>
-    //       <Box sx={{ mb: 3, px: 2, py: 2.5, background: '#F4F4F4', display: 'flex', alignItems: 'center' }}>
-    //         <h3> User Modal </h3>
-    //       </Box>
-    //       <Grid sx={{ px: 2 }} container spacing={2}>
-    //         {Object.keys(data).map((item) => {
-    //           const isError = Object.prototype.hasOwnProperty.call(errors, item);
-    //           const errorText = errors[item] ? errors[item] : '';
-    //           const itemValue = data[item] ? data[item] : '';
-
-    //           return (
-    //             <React.Fragment key={item}>
-    //               {item === '_id' || item === 'createdAt' ? null : (
-    //                 <Grid item xs={12} md={6}>
-    //                   <Box>
-    //                     <TextField
-    //                       id={item}
-    //                       onChange={handleOnChange}
-    //                       label={`Enter your ${item}`}
-    //                       variant="outlined"
-    //                       fullWidth
-    //                       value={itemValue}
-    //                       error={isError}
-    //                       helperText={errorText}
-    //                     />
-    //                   </Box>
-    //                 </Grid>
-    //               )}
-    //             </React.Fragment>
-    //           );
-    //         })}
-
-    //         <Grid item xs={12}>
-    //           {loading ? (
-    //             <div> Loading... </div>
-    //           ) : (
-    //             <Button onClick={handleCreateOrUpdate} variant="contained" fullWidth>
-    //               {openAddModal ? 'Create' : 'Update '}
-    //             </Button>
-    //           )}
-    //         </Grid>
-    //       </Grid>
-    //     </Box>
-    //   </Modal>
-    // </div>
-
     <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
       <DialogTitle> User Modal </DialogTitle>
       <DialogContent dividers>
-        <Grid sx={{ px: 0 }} container spacing={2}>
+        {errorResponse !== null && (
+          <Alert severity="error">
+            <p> {errorResponse} </p>
+          </Alert>
+        )}
+
+        <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
           {Object.keys(data).map((item) => {
             const isError = Object.prototype.hasOwnProperty.call(errors, item);
             const errorText = errors[item] ? errors[item] : '';
