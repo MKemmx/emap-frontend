@@ -60,3 +60,8 @@
 .css-1n4ch0j-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
   outline: none !important;
 }
+
+.rbc-event,
+.rbc-day-slot .rbc-background-event {
+  background-color: var(--emap-primary) !important;
+}

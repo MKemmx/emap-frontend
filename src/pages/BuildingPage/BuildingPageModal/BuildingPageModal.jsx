@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
 // Material UI
-import { Box, Modal, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 // Axios
 import axios from 'axios';
-
 import { toast } from 'react-toastify';
 
 // Sweet Alert
@@ -22,9 +21,8 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
   // Always showing
   const alwaysOpen = true;
   const [data, setData] = useState(editData === null ? INITIAL_STATE : editData);
-  // const [images, setImages] = useState([]);
-
   const [loading, setLoading] = useState(false);
+  const [errorResponse, setErrorResponse] = useState(null);
 
   // Error State
   const [errors, setError] = useState({});
@@ -53,15 +51,7 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
 
     // Check if input has any errors
     if (Object.keys(errorObject).length >= 1) {
-      return toast.error('Input fields has some errors', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse('Input fields has some errors');
     }
 
     // Handling Create or Update request
@@ -85,7 +75,7 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
       });
       await reFetchData('building');
       closeModal();
-      toast.success('Success new building has been added!', {
+      toast.success(`Success building has been ${openAddModal ? 'added' : 'updated'}!`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -95,16 +85,7 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.response.data.msg);
-      toast.error(`Something went wrong!`, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse(error.response.data.msg);
     } finally {
       setLoading(false);
     }
@@ -116,7 +97,13 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
       <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
         <DialogTitle> Building Modal</DialogTitle>
         <DialogContent dividers>
-          <Grid sx={{ px: 0 }} container spacing={2}>
+          {errorResponse !== null && (
+            <Alert severity="error">
+              <p> {errorResponse} </p>
+            </Alert>
+          )}
+
+          <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
             {Object.keys(data).map((item) => {
               const isError = Object.prototype.hasOwnProperty.call(errors, item);
               const errorText = errors[item] ? errors[item] : '';
@@ -159,7 +146,7 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
             })}
 
             <Grid item xs={12}>
-              <ImageDropZone setData={setData} />
+              <ImageDropZone data={data} setData={setData} />
             </Grid>
           </Grid>
         </DialogContent>

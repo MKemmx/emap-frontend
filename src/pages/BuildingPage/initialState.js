@@ -1,6 +1,6 @@
 export const INITIAL_STATE = {
   name: '',
-  marker: '',
+  marker: '#900303',
   description: '',
   images: [],
 };

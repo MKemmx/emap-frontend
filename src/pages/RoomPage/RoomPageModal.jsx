@@ -12,6 +12,7 @@ import {
   DialogActions,
   Autocomplete,
   CircularProgress,
+  Alert,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
@@ -30,6 +31,7 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
   const alwaysOpen = true;
   const [data, setData] = useState(editData === null ? INITIAL_STATE : editData);
   const [loading, setLoading] = useState(false);
+  const [errorResponse, setErrorResponse] = useState(null);
 
   // Building Menu
   const [buildingMenu, setBuildingMenu] = useState([]);
@@ -62,15 +64,7 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
 
     // Check if input has any errors
     if (Object.keys(errorObject).length >= 1) {
-      return toast.error('Input fields has some errors', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse('Input fields has some errors');
     }
 
     // Handling Create or Update request
@@ -83,7 +77,7 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
       });
       await reFetchData('room');
       closeModal();
-      toast.success('Success building coordinate has been added!', {
+      toast.success(`Success, Room has been ${openAddModal ? 'added' : 'updated'}!`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -93,16 +87,7 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.response.data.msg);
-      toast.error(`Something went wrong!`, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse(error.response.data.msg);
     } finally {
       setLoading(false);
     }
@@ -113,7 +98,6 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
     async function fetchBuildingMenu() {
       const buildingOptions = await getAllBuilding();
       setBuildingMenu(buildingOptions);
-
       if (editData !== null) {
         const shit = buildingOptions.map((item, index) => {
           if (item._id === editData.buildingId._id) {
@@ -131,6 +115,12 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
       <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
         <DialogTitle> Building Coordinate Modal </DialogTitle>
         <DialogContent dividers>
+          {errorResponse !== null && (
+            <Alert severity="error">
+              <p> {errorResponse} </p>
+            </Alert>
+          )}
+
           {buildingMenu.length <= 0 ? (
             <Box
               sx={{
@@ -144,7 +134,7 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
               <CircularProgress />
             </Box>
           ) : (
-            <Grid sx={{ px: 0 }} container spacing={2}>
+            <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
               <Grid item xs={12}>
                 <Box>
                   <Autocomplete

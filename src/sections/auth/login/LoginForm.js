@@ -60,9 +60,8 @@ export default function LoginForm() {
           </Alert>
         </Box>
       )}
-      <Stack sx={{ mt: 2 }} spacing={3}>
+      <Stack sx={{ mt: 2, mb: 3 }} spacing={3}>
         <TextField value={loginData.userName} onChange={handleChange} name="userName" label="Username" />
-
         <TextField
           onChange={handleChange}
           value={loginData.password}
@@ -80,13 +79,6 @@ export default function LoginForm() {
           }}
         />
       </Stack>
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 2 }}>
-        {/* <Checkbox name="remember" label="Remember me" /> */}
-        <Link color="primary.light" variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
-
       <LoadingButton
         sx={{
           background: '#900303',
@@ -103,6 +95,12 @@ export default function LoginForm() {
       >
         Login
       </LoadingButton>
+
+      <Stack direction="row" alignItems="center" justifyContent="flex-start" sx={{ mt: 2 }}>
+        <Link href="/" color="primary" variant="subtitle2" underline="hover">
+          Back to landing page
+        </Link>
+      </Stack>
     </>
   );
 }

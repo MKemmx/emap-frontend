@@ -12,6 +12,7 @@ import {
   DialogActions,
   Autocomplete,
   CircularProgress,
+  Alert,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
@@ -30,6 +31,7 @@ const BuildingCoordinateModal = ({ closeModal, openAddModal, editData, reFetchDa
   const alwaysOpen = true;
   const [data, setData] = useState(editData === null ? INITIAL_STATE : editData);
   const [loading, setLoading] = useState(false);
+  const [errorResponse, setErrorResponse] = useState(null);
 
   // Building Menu
   const [buildingMenu, setBuildingMenu] = useState([]);
@@ -62,15 +64,7 @@ const BuildingCoordinateModal = ({ closeModal, openAddModal, editData, reFetchDa
 
     // Check if input has any errors
     if (Object.keys(errorObject).length >= 1) {
-      return toast.error('Input fields has some errors', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse('Input fields has some errors');
     }
 
     // Handling Create or Update request
@@ -83,7 +77,7 @@ const BuildingCoordinateModal = ({ closeModal, openAddModal, editData, reFetchDa
       });
       await reFetchData('buildingCoordinate');
       closeModal();
-      toast.success('Success building coordinate has been added!', {
+      toast.success(`Success building coordinate has been ${openAddModal ? 'added' : 'updated'}!`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -93,16 +87,7 @@ const BuildingCoordinateModal = ({ closeModal, openAddModal, editData, reFetchDa
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.response.data.msg);
-      toast.error(`Something went wrong!`, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      setErrorResponse(error.response.data.msg);
     } finally {
       setLoading(false);
     }
@@ -131,6 +116,12 @@ const BuildingCoordinateModal = ({ closeModal, openAddModal, editData, reFetchDa
       <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
         <DialogTitle> Building Coordinate Modal </DialogTitle>
         <DialogContent dividers>
+          {errorResponse !== null && (
+            <Alert severity="error">
+              <p> {errorResponse} </p>
+            </Alert>
+          )}
+
           {buildingMenu.length <= 0 ? (
             <Box
               sx={{
@@ -144,22 +135,31 @@ const BuildingCoordinateModal = ({ closeModal, openAddModal, editData, reFetchDa
               <CircularProgress />
             </Box>
           ) : (
-            <Grid sx={{ px: 0 }} container spacing={2}>
+            <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
               <Grid item xs={12}>
                 <Box>
                   <Autocomplete
                     disabled={!!editData}
                     onChange={(event, value) => {
-                      buildingMenu.forEach((item, index) => {
-                        if (value._id === item._id) {
-                          setSelectedBuildingIndex(index);
-                        }
-                      });
+                      if (value) {
+                        buildingMenu.forEach((item, index) => {
+                          if (value._id === item._id) {
+                            setSelectedBuildingIndex(index);
+                          } else {
+                            setSelectedBuildingIndex(null);
+                          }
+                        });
 
-                      setData({
-                        ...data,
-                        buildingId: value._id,
-                      });
+                        setData({
+                          ...data,
+                          buildingId: value._id,
+                        });
+                      } else {
+                        setData({
+                          ...data,
+                          buildingId: '',
+                        });
+                      }
                     }}
                     value={buildingMenu[selectedBuildingIndex] ? buildingMenu[selectedBuildingIndex] : null}
                     isOptionEqualToValue={(option, value) => option._id === value._id}

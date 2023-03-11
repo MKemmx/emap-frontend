@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-// import { faker } from '@faker-js/faker';
+
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography, Skeleton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+// Icons
+import { AiOutlineCalendar } from 'react-icons/ai';
+import { MdOutlineFeedback } from 'react-icons/md';
+import { BsBuilding } from 'react-icons/bs';
+import { GiRoad } from 'react-icons/gi';
+import { HiOutlineUserGroup } from 'react-icons/hi';
 
 // Axios
 import axios from 'axios';
-
-// components
-// import Iconify from '../../components/iconify';
 
 // sections
 import {
@@ -28,7 +33,8 @@ import {
 
 export default function DashboardAppPage() {
   const theme = useTheme();
-
+  const navigate = useNavigate();
+  // Dashboard States
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
 
@@ -39,16 +45,18 @@ export default function DashboardAppPage() {
         setLoading(true);
         const { data } = await axios.get('/dashboard');
         setData(data.data);
-        // console.log(data.data);
-        setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.msg);
+      } finally {
         setLoading(false);
       }
     }
-
     fetchDashboard();
   }, []);
+
+  const handleChangeRoute = (link) => {
+    navigate(`/dashboard/${link}`);
+  };
 
   return (
     <>
@@ -78,52 +86,105 @@ export default function DashboardAppPage() {
         ) : (
           <>
             <Grid container spacing={{ xs: 2, md: 3 }}>
-              <Grid item xs={6} sm={6} md={4}>
-                <AppWidgetSummary title="Users" total={data?.adminLength} icon={'ant-design:android-filled'} />
+              <Grid
+                onClick={() => {
+                  handleChangeRoute('user');
+                }}
+                item
+                xs={6}
+                sm={6}
+                md={4}
+              >
+                <AppWidgetSummary
+                  title="Users"
+                  total={data?.adminLength}
+                  color="info"
+                  icon={<HiOutlineUserGroup size={24} />}
+                />
               </Grid>
 
-              <Grid item xs={6} sm={6} md={4}>
+              <Grid
+                onClick={() => {
+                  handleChangeRoute('building');
+                }}
+                item
+                xs={6}
+                sm={6}
+                md={4}
+              >
                 <AppWidgetSummary
                   title="Buildings"
                   total={data?.buildingLength}
-                  color="info"
-                  icon={'ant-design:apple-filled'}
+                  color="warning"
+                  icon={<BsBuilding size={24} />}
                 />
               </Grid>
 
-              <Grid item xs={6} sm={6} md={4}>
+              <Grid
+                onClick={() => {
+                  handleChangeRoute('room');
+                }}
+                item
+                xs={6}
+                sm={6}
+                md={4}
+              >
                 <AppWidgetSummary
                   title="Rooms"
                   total={data?.roomLength}
-                  color="warning"
-                  icon={'ant-design:windows-filled'}
+                  color="error"
+                  icon={<BsBuilding size={24} />}
                 />
               </Grid>
 
-              <Grid item xs={6} sm={6} md={4}>
+              <Grid
+                onClick={() => {
+                  handleChangeRoute('event');
+                }}
+                item
+                xs={6}
+                sm={6}
+                md={4}
+              >
                 <AppWidgetSummary
                   title="Events"
                   total={data?.eventLength}
-                  color="error"
-                  icon={'ant-design:bug-filled'}
+                  color="info"
+                  icon={<AiOutlineCalendar size={24} />}
                 />
               </Grid>
 
-              <Grid item xs={6} sm={6} md={4}>
+              <Grid
+                onClick={() => {
+                  handleChangeRoute('feedback');
+                }}
+                item
+                xs={6}
+                sm={6}
+                md={4}
+              >
                 <AppWidgetSummary
                   title="Feedbacks"
                   total={data?.feedbackLength}
                   color="warning"
-                  icon={'ant-design:windows-filled'}
+                  icon={<MdOutlineFeedback size={24} />}
                 />
               </Grid>
 
-              <Grid item xs={6} sm={6} md={4}>
+              <Grid
+                onClick={() => {
+                  handleChangeRoute('audit-trail');
+                }}
+                item
+                xs={6}
+                sm={6}
+                md={4}
+              >
                 <AppWidgetSummary
                   title="Audit Trails"
                   total={data?.auditTrailLength}
                   color="error"
-                  icon={'ant-design:bug-filled'}
+                  icon={<GiRoad size={24} />}
                 />
               </Grid>
 

@@ -4,8 +4,6 @@ import { alpha, styled } from '@mui/material/styles';
 import { Card, Typography } from '@mui/material';
 // utils
 import { fShortenNumber } from '../../../utils/formatNumber';
-// components
-import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +19,6 @@ const StyledIcon = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
 AppWidgetSummary.propTypes = {
   color: PropTypes.string,
   icon: PropTypes.string,
@@ -34,6 +31,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
   return (
     <Card
       sx={{
+        cursor: 'pointer',
         py: 5,
         boxShadow: 0,
         textAlign: 'center',
@@ -53,7 +51,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
             )} 100%)`,
         }}
       >
-        <Iconify icon={icon} width={24} height={24} />
+        {icon}
       </StyledIcon>
 
       <Typography variant="h3"> {total <= 0 ? 0 : fShortenNumber(total)} </Typography>

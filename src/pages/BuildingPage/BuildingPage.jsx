@@ -14,7 +14,7 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { AiOutlineSearch, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import { AiOutlineSearch, AiOutlineEdit } from 'react-icons/ai';
 
 // Hooks
 import useFetch from '../../hooks/useFetch';
@@ -25,6 +25,7 @@ import BuildingImages from './BuildingImages';
 
 // Modal
 import BuildingPageModal from './BuildingPageModal/BuildingPageModal';
+import DeleteDialog from './DeleteDialog';
 
 // ----------------------------------------------------------------------
 export default function BuildingPage() {
@@ -90,8 +91,6 @@ export default function BuildingPage() {
       minWidth: 120,
       headerClassName: 'action-header',
       renderCell: ({ row }) => {
-        console.log(row);
-
         return (
           <Box
             sx={{
@@ -110,16 +109,9 @@ export default function BuildingPage() {
               </IconButton>
             </Tooltip>
 
-            <Tooltip
-              onClick={() => {
-                handleDelete('building', row._id);
-              }}
-              title="Delete"
-            >
-              <IconButton>
-                <AiOutlineDelete />
-              </IconButton>
-            </Tooltip>
+            {/* <Tooltip title="Delete"> */}
+            <DeleteDialog buildingId={row._id} handleDelete={handleDelete} />
+            {/* </Tooltip> */}
           </Box>
         );
       },

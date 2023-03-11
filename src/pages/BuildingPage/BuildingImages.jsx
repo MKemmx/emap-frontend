@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import ImageGallery from 'react-image-gallery';
 
 const BuildingImages = ({ params }) => {

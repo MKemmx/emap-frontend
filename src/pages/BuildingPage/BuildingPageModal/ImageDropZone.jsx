@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 
-const ImageDropZone = ({ setData }) => {
+const ImageDropZone = ({ data, setData }) => {
+  const [editImages, setEditImage] = useState(data?.images);
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     accept: {
       'image/jpeg': [],
@@ -14,7 +16,7 @@ const ImageDropZone = ({ setData }) => {
   const files = acceptedFiles.map((file) => {
     return (
       <Grid item xs={6} sx={{ padding: '5px 10px', width: '100%' }} key={file.path}>
-        <Box sx={{ border: '2px gray solid', padding: '8px 12px' }}>
+        <Box sx={{ border: '2px gray solid', padding: '8px 12px', overflow: 'hidden' }}>
           <img
             style={{ width: '100%', height: '120px', objectFit: 'contain', marginBottom: '10px' }}
             src={URL.createObjectURL(file)}
@@ -32,7 +34,7 @@ const ImageDropZone = ({ setData }) => {
     setData((prev) => {
       return {
         ...prev,
-        images: acceptedFiles,
+        images: acceptedFiles.length <= 0 ? editImages : acceptedFiles,
       };
     });
   }, [acceptedFiles]);
@@ -63,6 +65,24 @@ const ImageDropZone = ({ setData }) => {
       <Grid container sx={{ mt: 2 }}>
         {files}
       </Grid>
+
+      {acceptedFiles.length <= 0 && (
+        <Grid container sx={{ mt: 2 }}>
+          {editImages?.map((item) => {
+            return (
+              <Grid key={item.id} item xs={6} sx={{ padding: '5px 10px', width: '100%' }}>
+                <Box sx={{ border: '2px gray solid', padding: '8px 12px' }}>
+                  <img
+                    style={{ width: '100%', height: '120px', objectFit: 'contain', marginBottom: '10px' }}
+                    src={item.url}
+                    alt="Thumb"
+                  />
+                </Box>
+              </Grid>
+            );
+          })}
+        </Grid>
+      )}
     </section>
   );
 };

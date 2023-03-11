@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // Material UI
-import { Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, Grid, TextField, Button, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 // Date Picker
@@ -21,6 +21,7 @@ const EventPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => 
   const alwaysOpen = true;
   const [data, setData] = useState(editData === null ? INITIAL_STATE : editData);
   const [loading, setLoading] = useState(false);
+  const [errorResponse, setErrorResponse] = useState(null);
 
   // Error State
   const [errors, setError] = useState({});
@@ -49,15 +50,7 @@ const EventPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => 
 
     // Check if input has any errors
     if (Object.keys(errorObject).length >= 1) {
-      return toast.error('Input fields has some errors', {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse('Input fields has some errors');
     }
 
     // Handling Create or Update request
@@ -70,7 +63,7 @@ const EventPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => 
       });
       await reFetchData('event');
       closeModal();
-      toast.success('Success building coordinate has been added!', {
+      toast.success(`Success event has been ${openAddModal ? 'added' : 'updated'}!`, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -80,16 +73,7 @@ const EventPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => 
         progress: undefined,
       });
     } catch (error) {
-      console.log(error.response.data.msg);
-      toast.error(`Something went wrong!`, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return setErrorResponse(error.response.data.msg);
     } finally {
       setLoading(false);
     }
@@ -101,7 +85,13 @@ const EventPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => 
       <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
         <DialogTitle> Building Modal </DialogTitle>
         <DialogContent dividers>
-          <Grid sx={{ px: 0 }} container spacing={2}>
+          {errorResponse !== null && (
+            <Alert severity="error">
+              <p> {errorResponse} </p>
+            </Alert>
+          )}
+
+          <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
             <Grid item xs={12}>
               <Box>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
