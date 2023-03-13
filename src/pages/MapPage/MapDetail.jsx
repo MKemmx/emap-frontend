@@ -2,24 +2,20 @@ import React from 'react';
 
 // Material UI
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
-import EventsImage from '../LandingPages/images/Events';
+import MapImages from './MapImages';
 
 const MapDetail = ({ selectedMarker, closeModal }) => {
   // Always showing
   const alwaysOpen = true;
-
   return (
-    <Dialog width="100%" maxWidth="md" open={alwaysOpen} onClose={closeModal} scroll="paper">
-      <DialogTitle> {selectedMarker.name} </DialogTitle>
+    <Dialog fullWidth="md" maxWidth="md" width="100%" open={alwaysOpen} onClose={closeModal} scroll="paper">
+      <DialogTitle> {selectedMarker?.buildingId?.name} </DialogTitle>
       <DialogContent dividers>
         <Box>
-          <EventsImage />
+          <MapImages images={selectedMarker.buildingId.images} />
         </Box>
         <Box>
-          <Typography gutterBottom>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum modi impedit hic doloremque natus accusamus
-            iusto, laudantium quod dolore error?
-          </Typography>
+          <Typography gutterBottom>{selectedMarker?.buildingId?.description}</Typography>
         </Box>
       </DialogContent>
       <DialogActions>

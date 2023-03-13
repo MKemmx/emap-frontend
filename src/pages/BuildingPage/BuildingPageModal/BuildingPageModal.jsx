@@ -122,7 +122,6 @@ const BuildingPageModal = ({ closeModal, openAddModal, editData, reFetchData }) 
                         }}
                         item
                         xs={12}
-                        md={isDescription ? 12 : 6}
                       >
                         <Box>
                           <TextField

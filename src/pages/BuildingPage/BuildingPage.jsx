@@ -71,13 +71,6 @@ export default function BuildingPage() {
       editable: false,
     },
     {
-      field: 'marker',
-      headerName: 'Marker Color',
-      minWidth: 150,
-      flex: 1,
-      editable: false,
-    },
-    {
       field: 'images',
       headerName: 'Building Images',
       minWidth: 300,

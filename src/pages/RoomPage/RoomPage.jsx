@@ -70,13 +70,6 @@ export default function RoomPage() {
       editable: false,
     },
     {
-      field: 'marker',
-      headerName: 'Marker Color',
-      minWidth: 150,
-      flex: 1,
-      editable: false,
-    },
-    {
       field: '',
       headerName: 'Actions',
       minWidth: 120,

@@ -28,6 +28,10 @@
   object-fit: cover;
 }
 
+.image-gallery-content .image-gallery-slide .image-gallery-image.isModal {
+  max-height: 380px;
+}
+
 .image-gallery-content .image-gallery-slide .image-gallery-image.isOpen {
   max-height: calc(100vh - 80px);
   height: 100%;

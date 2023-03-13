@@ -35,6 +35,7 @@ const RoomCoordinatePageModal = ({ closeModal, openAddModal, editData, reFetchDa
 
   // Building Menu
   const [buildingMenu, setBuildingMenu] = useState([]);
+  const [loadingBuildingMenu, setLoadingBuildingMenu] = useState(false);
   const [selectedBuildingIndex, setSelectedBuildingIndex] = useState(null);
 
   // Error State
@@ -96,8 +97,10 @@ const RoomCoordinatePageModal = ({ closeModal, openAddModal, editData, reFetchDa
 
   useEffect(() => {
     async function fetchBuildingMenu() {
+      setLoadingBuildingMenu(true);
       const buildingOptions = await getAllRoom();
       setBuildingMenu(buildingOptions);
+      setLoadingBuildingMenu(false);
 
       if (editData !== null) {
         const shit = buildingOptions.map((item, index) => {
@@ -122,7 +125,7 @@ const RoomCoordinatePageModal = ({ closeModal, openAddModal, editData, reFetchDa
             </Alert>
           )}
 
-          {buildingMenu.length <= 0 ? (
+          {loadingBuildingMenu ? (
             <Box
               sx={{
                 width: 480,

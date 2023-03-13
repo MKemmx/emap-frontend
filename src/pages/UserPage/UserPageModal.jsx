@@ -85,15 +85,13 @@ const UserPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
           </Alert>
         )}
 
-        <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
+        <Grid mt={1} mb={2} sx={{ px: 0 }} container spacing={2}>
           {Object.keys(data).map((item) => {
             const isError = Object.prototype.hasOwnProperty.call(errors, item);
             const errorText = errors[item] ? errors[item] : '';
             const itemValue = data[item] ? data[item] : '';
-
             // Check if desciption
             const isDescription = item === 'description';
-
             return (
               <React.Fragment key={item}>
                 {item === '_id' || item === 'createdAt' ? null : (

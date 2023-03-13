@@ -1,9 +1,11 @@
-import { textAlign } from '@mui/system';
 import React, { useState, useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
 
-const BuildingImages = ({ params }) => {
-  const imagesLinks = params?.formattedValue?.map((item) => {
+// Material UI
+import { Box, Typography } from '@mui/material';
+
+const MapImages = ({ images }) => {
+  const imagesLinks = images?.map((item) => {
     return {
       original: item.url,
       thumbnail: item.url,
@@ -13,6 +15,9 @@ const BuildingImages = ({ params }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   useEffect(() => {
     const selectedImages = document.querySelectorAll('.image-gallery-image');
+    selectedImages.forEach((item) => {
+      item.classList.add('isModal');
+    });
     if (isFullScreen) {
       selectedImages.forEach((item) => {
         item.classList.add('isOpen');
@@ -31,18 +36,28 @@ const BuildingImages = ({ params }) => {
         background: '#FFF',
         padding: '8px 15px',
         boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
+        marginBottom: '1.5rem',
       }}
     >
-      {imagesLinks.length <= 0 ? (
-        <div style={{ padding: '5px 10px' }}>
-          <p style={{ textAlign: 'center', fontWeight: 'bold' }}>No images uploaded</p>
-        </div>
+      {imagesLinks <= 0 ? (
+        <Box
+          style={{
+            height: '20vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          py={5}
+        >
+          <Typography variant="h4" textAlign="center">
+            No Image Uploaded
+          </Typography>
+        </Box>
       ) : (
         <ImageGallery
-          eGallery
-          onScreenChange={(fullScreen) => setIsFullScreen(fullScreen)}
           showPlayButton={false}
           showNav={false}
+          onScreenChange={(fullScreen) => setIsFullScreen(fullScreen)}
           items={imagesLinks}
         />
       )}
@@ -50,4 +65,4 @@ const BuildingImages = ({ params }) => {
   );
 };
 
-export default BuildingImages;
+export default MapImages;

@@ -1,5 +1,4 @@
 export const INITIAL_STATE = {
   buildingId: '',
   name: '',
-  marker: '#900303',
 };

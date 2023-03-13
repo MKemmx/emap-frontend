@@ -5,7 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import dayjs from 'dayjs';
 
 // Material UI
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Typography, Container } from '@mui/material';
 
 // Events Image
 import EventsImage from './images/Events';
@@ -21,7 +21,11 @@ const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   if (loading) {
-    return <Skeleton variant="rounded" width="100%" height="65vh" />;
+    return (
+      <Container>
+        <Skeleton variant="rounded" width="100%" height="65vh" />
+      </Container>
+    );
   }
 
   const events = data?.map((item) => {
@@ -38,7 +42,7 @@ const Events = () => {
   };
 
   return (
-    <>
+    <Container>
       <Box sx={{ py: 3, width: '100%' }}>
         {data?.length <= 0 ? (
           <Box>
@@ -62,7 +66,7 @@ const Events = () => {
       </Box>
 
       {selectedEvent !== null && <EventModal selectedEvent={selectedEvent} closeModal={closeModal} />}
-    </>
+    </Container>
   );
 };
 

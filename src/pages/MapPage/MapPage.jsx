@@ -1,11 +1,14 @@
 import React, { useRef, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Skeleton } from '@mui/material';
 import Map, { NavigationControl, Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Icons
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import MapDetail from './MapDetail';
+
+// React Hooks
+import useFetch from '../../hooks/useFetch';
 
 const MapPage = () => {
   const mapRef = useRef(null);
@@ -18,19 +21,8 @@ const MapPage = () => {
       }
     });
   };
-  const markers = [
-    {
-      latitude: 11.2397621,
-      longitude: 124.9979799,
-      name: 'Gabaldon Building',
-    },
-    {
-      latitude: 11.2398152,
-      longitude: 124.9976777,
-      name: 'Administration Building',
-    },
-  ];
 
+  const { data, loading, error } = useFetch('buildingCoordinate');
   const [selectedMarker, setSelectedMarker] = useState(null);
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
@@ -39,8 +31,24 @@ const MapPage = () => {
     setSelectedMarker(null);
   };
 
+  if (loading) {
+    return (
+      <Box py={5} sx={{ width: '100%', height: '85vh' }}>
+        <Skeleton variant="rounded" width="100%" height="100%" />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>
+        <h1>Something went wrong....</h1>
+      </div>
+    );
+  }
+
   return (
-    <Box py={5} sx={{ width: '100%', height: '80vh' }}>
+    <Box py={5} sx={{ width: '100%', height: '85vh' }}>
       <Map
         mapboxAccessToken="pk.eyJ1Ijoia2NwaGlsaXAiLCJhIjoiY2w3Njk4NmZwMXltMTNucng1czdhMGo0aiJ9.rsKrbG0IARxPZrUfSqSrKA"
         initialViewState={{
@@ -58,25 +66,27 @@ const MapPage = () => {
         onLoad={handleMapLoad}
         ref={mapRef}
       >
-        {markers.map((marker) => (
-          <Marker key={marker.name} latitude={marker.latitude} longitude={marker.longitude}>
-            <Box
-              onClick={() => handleMarkerClick(marker)}
-              display="flex"
-              justfiycontent="center"
-              alignItems="center"
-              flexDirection="column"
-            >
-              <FaMapMarkerAlt color="#900303" width={25} size={25} />
-              <Typography variant="subtitle2"> {marker.name} </Typography>
-            </Box>
-          </Marker>
-        ))}
+        {data?.map((marker) => {
+          return (
+            <Marker key={marker?.buildingId?.name} latitude={marker.latitude} longitude={marker.longitude}>
+              <Box
+                onClick={() => handleMarkerClick(marker)}
+                display="flex"
+                justfiycontent="center"
+                alignItems="center"
+                flexDirection="column"
+              >
+                <FaMapMarkerAlt color="#900303" width={18} size={18} />
+                <Typography variant="subtitle2"> {marker?.buildingId?.name} </Typography>
+              </Box>
+            </Marker>
+          );
+        })}
+
         <div style={{ position: 'absolute', right: 10, top: 10 }}>
           <NavigationControl />
         </div>
       </Map>
-
       {selectedMarker !== null && <MapDetail selectedMarker={selectedMarker} closeModal={closeModal} />}
     </Box>
   );

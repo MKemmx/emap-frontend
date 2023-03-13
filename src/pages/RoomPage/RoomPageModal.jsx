@@ -111,107 +111,105 @@ const RoomPageModal = ({ closeModal, openAddModal, editData, reFetchData }) => {
   }, []);
 
   return (
-    <>
-      <Dialog open={alwaysOpen} onClose={closeModal} scroll="body">
-        <DialogTitle> Building Coordinate Modal </DialogTitle>
-        <DialogContent dividers>
-          {errorResponse !== null && (
-            <Alert severity="error">
-              <p> {errorResponse} </p>
-            </Alert>
-          )}
+    <Dialog fullWidth="sm" maxWidth="sm" width="100%" open={alwaysOpen} onClose={closeModal} scroll="body">
+      <DialogTitle> Room Modal </DialogTitle>
+      <DialogContent dividers>
+        {errorResponse !== null && (
+          <Alert severity="error">
+            <p> {errorResponse} </p>
+          </Alert>
+        )}
 
-          {buildingMenu.length <= 0 ? (
-            <Box
-              sx={{
-                width: 480,
-                minHeight: '20vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Grid mt={1} sx={{ px: 0 }} container spacing={2}>
-              <Grid item xs={12}>
-                <Box>
-                  <Autocomplete
-                    disabled={!!editData}
-                    onChange={(event, value) => {
-                      buildingMenu.forEach((item, index) => {
-                        if (value._id === item._id) {
-                          setSelectedBuildingIndex(index);
-                        }
-                      });
+        {buildingMenu.length <= 0 ? (
+          <Box
+            sx={{
+              width: 480,
+              minHeight: '20vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Grid mt={1} mb={2} sx={{ px: 0 }} container spacing={2}>
+            <Grid item xs={12}>
+              <Box>
+                <Autocomplete
+                  disabled={!!editData}
+                  onChange={(event, value) => {
+                    buildingMenu.forEach((item, index) => {
+                      if (value._id === item._id) {
+                        setSelectedBuildingIndex(index);
+                      }
+                    });
 
-                      setData({
-                        ...data,
-                        buildingId: value._id,
-                      });
-                    }}
-                    value={buildingMenu[selectedBuildingIndex] ? buildingMenu[selectedBuildingIndex] : null}
-                    isOptionEqualToValue={(option, value) => option._id === value._id}
-                    disablePortal
-                    options={buildingMenu}
-                    sx={{ width: '100%' }}
-                    renderInput={(params) => <TextField {...params} label="Select building" />}
-                  />
-                </Box>
-              </Grid>
-
-              {Object.keys(data).map((item) => {
-                const isError = Object.prototype.hasOwnProperty.call(errors, item);
-                const errorText = errors[item] ? errors[item] : '';
-                const itemValue = data[item] ? data[item] : '';
-
-                // Check if desciption
-                const isDescription = item === 'description';
-
-                return (
-                  <React.Fragment key={item}>
-                    {item === '_id' || item === 'createdAt' ? null : (
-                      <>
-                        <Grid
-                          sx={{
-                            display: item === 'buildingId' ? 'none' : '',
-                          }}
-                          item
-                          xs={12}
-                          md={isDescription ? 12 : 6}
-                        >
-                          <Box>
-                            <TextField
-                              multiline={isDescription}
-                              minRows={8}
-                              id={item}
-                              onChange={handleOnChange}
-                              label={`Enter room ${item}`}
-                              variant="outlined"
-                              fullWidth
-                              value={itemValue}
-                              error={isError}
-                              helperText={errorText}
-                            />
-                          </Box>
-                        </Grid>
-                      </>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                    setData({
+                      ...data,
+                      buildingId: value._id,
+                    });
+                  }}
+                  value={buildingMenu[selectedBuildingIndex] ? buildingMenu[selectedBuildingIndex] : null}
+                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                  disablePortal
+                  options={buildingMenu}
+                  sx={{ width: '100%' }}
+                  renderInput={(params) => <TextField {...params} label="Select building" />}
+                />
+              </Box>
             </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeModal}>Cancel</Button>
-          <LoadingButton loading={loading} variant="contained" onClick={handleCreateOrUpdate}>
-            {openAddModal ? 'Save' : 'Update '}
-          </LoadingButton>
-        </DialogActions>
-      </Dialog>
-    </>
+
+            {Object.keys(data).map((item) => {
+              const isError = Object.prototype.hasOwnProperty.call(errors, item);
+              const errorText = errors[item] ? errors[item] : '';
+              const itemValue = data[item] ? data[item] : '';
+
+              // Check if desciption
+              const isDescription = item === 'description';
+
+              return (
+                <React.Fragment key={item}>
+                  {item === '_id' || item === 'createdAt' ? null : (
+                    <>
+                      <Grid
+                        sx={{
+                          display: item === 'buildingId' ? 'none' : '',
+                        }}
+                        item
+                        xs={12}
+                        md={12}
+                      >
+                        <Box>
+                          <TextField
+                            multiline={isDescription}
+                            minRows={8}
+                            id={item}
+                            onChange={handleOnChange}
+                            label={`Enter room ${item}`}
+                            variant="outlined"
+                            fullWidth
+                            value={itemValue}
+                            error={isError}
+                            helperText={errorText}
+                          />
+                        </Box>
+                      </Grid>
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </Grid>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeModal}>Cancel</Button>
+        <LoadingButton loading={loading} variant="contained" onClick={handleCreateOrUpdate}>
+          {openAddModal ? 'Save' : 'Update '}
+        </LoadingButton>
+      </DialogActions>
+    </Dialog>
   );
 };
 

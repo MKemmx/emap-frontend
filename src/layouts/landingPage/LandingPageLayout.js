@@ -27,7 +27,6 @@ const navItems = ['Home', 'Events', 'About', 'Map'];
 function LandingPageLayout(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
@@ -39,7 +38,7 @@ function LandingPageLayout(props) {
   };
 
   // Check if Logged In
-  const { isAuthenticated, logout } = useLoginStore((state) => state);
+  const { isAuthenticated } = useLoginStore((state) => state);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -123,8 +122,8 @@ function LandingPageLayout(props) {
             </Toolbar>
           </AppBar>
           {/* Content */}
-          <Box sx={{ width: '100%', mx: 'auto' }}>
-            <Container>
+          <Box width="100%">
+            <Box>
               <Box component="nav">
                 <Drawer
                   container={container}
@@ -142,7 +141,6 @@ function LandingPageLayout(props) {
                   {drawer}
                 </Drawer>
               </Box>
-
               <Box
                 component="main"
                 sx={{
@@ -157,12 +155,11 @@ function LandingPageLayout(props) {
               >
                 <Outlet />
               </Box>
-            </Container>
-
+            </Box>
             <Box
               sx={{ py: 2, background: '#900303', color: '#FFF', height: '7vh', display: 'flex', alignItems: 'center' }}
             >
-              <Container>&#169; 2023 eMap.</Container>
+              <Container>&#169; 2023 eMap. </Container>
             </Box>
           </Box>
         </Box>
