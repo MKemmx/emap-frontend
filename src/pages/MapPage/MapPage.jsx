@@ -10,6 +10,11 @@ import MapDetail from './MapDetail';
 // React Hooks
 import useFetch from '../../hooks/useFetch';
 
+const restrictCoordinate = [
+  [124.99546128744299, 11.235492361385226],
+  [124.99961403816081, 11.241472455418574],
+];
+
 const MapPage = () => {
   const mapRef = useRef(null);
   const handleMapLoad = () => {
@@ -50,6 +55,7 @@ const MapPage = () => {
   return (
     <Box py={5} sx={{ width: '100%', height: '85vh' }}>
       <Map
+        rest
         mapboxAccessToken="pk.eyJ1Ijoia2NwaGlsaXAiLCJhIjoiY2w3Njk4NmZwMXltMTNucng1czdhMGo0aiJ9.rsKrbG0IARxPZrUfSqSrKA"
         initialViewState={{
           longitude: 124.997452,
@@ -60,6 +66,7 @@ const MapPage = () => {
           tilt: 80,
           pitch: 60,
           bearing: 180,
+          maxBounds: restrictCoordinate,
         }}
         style={{ width: '100%', minHeight: '500px', height: '100%' }}
         mapStyle="mapbox://styles/chryzxc/cjou70fxh5cwm2rn09outswx2"
