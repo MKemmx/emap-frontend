@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Box, Typography, Skeleton } from '@mui/material';
-import Map, { NavigationControl, Marker, Popup } from 'react-map-gl';
+import Map, { NavigationControl, Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Icons

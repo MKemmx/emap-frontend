@@ -6,7 +6,6 @@ import { Card, CardHeader, Box } from '@mui/material';
 import { useChart } from '../../../components/chart';
 
 // ----------------------------------------------------------------------
-
 AppWebsiteVisits.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
@@ -19,14 +18,17 @@ export default function AppWebsiteVisits({ title, subheader, chartLabels, chartD
     plotOptions: { bar: { columnWidth: '16%' } },
     fill: { type: chartData.map((i) => i.fill) },
     labels: chartLabels,
-    xaxis: { type: 'datetime' },
+    xaxis: { type: 'text' },
+    yaxis: {
+      show: false,
+    },
     tooltip: {
       shared: true,
       intersect: false,
       y: {
         formatter: (y) => {
           if (typeof y !== 'undefined') {
-            return `${y.toFixed(0)} visits`;
+            return `${y.toFixed(0)}`;
           }
           return y;
         },

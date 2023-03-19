@@ -24,26 +24,49 @@ import {
   // AppTrafficBySite,
   // AppCurrentSubject,
   // AppConversionRates,
+  // AppCurrentVisits,
   AppWidgetSummary,
-  AppCurrentVisits,
   AppWebsiteVisits,
 } from '../../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-  const theme = useTheme();
+  // const theme = useTheme();
   const navigate = useNavigate();
   // Dashboard States
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
 
+  const [downloadAnalytics, setDowloadAnalytics] = useState([
+    { month: 'January', count: 0 },
+    { month: 'February', count: 0 },
+    { month: 'March', count: 0 },
+    { month: 'April', count: 0 },
+    { month: 'May', count: 0 },
+    { month: 'June', count: 0 },
+    { month: 'July', count: 0 },
+    { month: 'August', count: 0 },
+    { month: 'September', count: 0 },
+    { month: 'October', count: 0 },
+    { month: 'November', count: 0 },
+    { month: 'December', count: 0 },
+  ]);
+
   useEffect(() => {
-    // Fetch Dashboard
     async function fetchDashboard() {
       try {
         setLoading(true);
         const { data } = await axios.get('/dashboard');
+
+        const analyticsCopy = [...downloadAnalytics];
+        data?.data?.download?.forEach(({ downloadDate }) => {
+          const monthName = new Date(downloadDate).toLocaleString('default', { month: 'long' });
+          const monthIndex = downloadAnalytics.findIndex(({ month }) => month === monthName);
+          if (monthIndex >= 0) analyticsCopy[monthIndex].count += 1;
+        });
+        setDowloadAnalytics(analyticsCopy);
+
         setData(data.data);
       } catch (error) {
         console.log(error.response.data.msg);
@@ -57,6 +80,10 @@ export default function DashboardAppPage() {
   const handleChangeRoute = (link) => {
     navigate(`/dashboard/${link}`);
   };
+
+  useEffect(() => {
+    console.log(downloadAnalytics);
+  }, [downloadAnalytics]);
 
   return (
     <>
@@ -188,47 +215,23 @@ export default function DashboardAppPage() {
                 />
               </Grid>
 
-              <Grid item xs={12} md={6} lg={8}>
+              <Grid item xs={12} md={12} lg={12}>
                 <AppWebsiteVisits
                   title="Download Analytics"
-                  // subheader="(+43%) than last year"
-                  chartLabels={[
-                    '01/01/2023',
-                    '02/01/2023',
-                    '03/01/2023',
-                    '04/01/2023',
-                    '05/01/2023',
-                    '06/01/2023',
-                    '07/01/2023',
-                    '08/01/2023',
-                    '09/01/2023',
-                    '10/01/2023',
-                    '11/01/2023',
-                  ]}
+                  subheader={`${new Date().getFullYear()} download analytics`}
+                  chartLabels={downloadAnalytics.map((item) => item.month)}
                   chartData={[
                     {
-                      name: 'Team A',
+                      name: `This month's download`,
                       type: 'column',
                       fill: 'solid',
-                      data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                    },
-                    {
-                      name: 'Team B',
-                      type: 'area',
-                      fill: 'gradient',
-                      data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                    },
-                    {
-                      name: 'Team C',
-                      type: 'line',
-                      fill: 'solid',
-                      data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                      data: downloadAnalytics.map((item) => item.count),
                     },
                   ]}
                 />
               </Grid>
 
-              <Grid item xs={12} md={6} lg={4}>
+              {/* <Grid item xs={12} md={6} lg={4}>
                 <AppCurrentVisits
                   title="Current Visits"
                   chartData={[
@@ -244,7 +247,7 @@ export default function DashboardAppPage() {
                     theme.palette.error.main,
                   ]}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* <Grid item xs={12} md={6} lg={8}>
             <AppConversionRates
