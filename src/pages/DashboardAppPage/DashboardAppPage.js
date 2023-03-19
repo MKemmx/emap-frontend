@@ -103,10 +103,7 @@ export default function DashboardAppPage() {
                 <Skeleton variant="rounded" width="100%" height={180} />
               </Grid>
             ))}
-            <Grid item xs={8}>
-              <Skeleton variant="rounded" width="100%" height={300} />
-            </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <Skeleton variant="rounded" width="100%" height={300} />
             </Grid>
           </Grid>
