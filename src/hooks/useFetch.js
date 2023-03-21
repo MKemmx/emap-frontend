@@ -57,7 +57,8 @@ const useFetch = (urlLink) => {
         item?.buildingId?.name?.toLowerCase().includes(searchedText) ||
         item?.longitude?.toLowerCase().includes(searchedText) ||
         item?.latitude?.toLowerCase().includes(searchedText) ||
-        item?.roomId?.name?.toLowerCase().includes(searchedText)
+        item?.roomId?.name?.toLowerCase().includes(searchedText) ||
+        item?.appVersion?.toLowerCase().includes(searchedText)
       ) {
         filtered.push(item);
       }

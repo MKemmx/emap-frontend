@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { DataGrid } from '@mui/x-data-grid';
 // @mui
-import { Card, Stack, Button, Container, Typography, Box, TextField, InputAdornment } from '@mui/material';
+import { Card, Stack, Button, Container, Typography, Box, TextField, InputAdornment, Rating } from '@mui/material';
 import { AiOutlineSearch } from 'react-icons/ai';
 
 // Hooks
@@ -31,6 +31,9 @@ const columns = [
     minWidth: 150,
     flex: 1,
     editable: false,
+    renderCell: ({ row }) => {
+      return <Rating value={row.rating} readOnly />;
+    },
   },
   {
     field: 'message',

@@ -9,9 +9,6 @@ import { useNavigate } from 'react-router-dom';
 // Store
 import { useLoginStore } from '../../../store/loginStore';
 
-// mocks_
-import account from '../../../_mock/account';
-
 // ----------------------------------------------------------------------
 const MENU_OPTIONS = [
   {

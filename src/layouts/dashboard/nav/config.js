@@ -1,12 +1,9 @@
 // Icons
-import { AiOutlineCalendar, AiOutlineDashboard } from 'react-icons/ai';
+import { AiOutlineCalendar, AiOutlineDashboard, AiOutlineMobile } from 'react-icons/ai';
 import { MdOutlineFeedback, MdMeetingRoom } from 'react-icons/md';
 import { BsBuilding, BsMap } from 'react-icons/bs';
 import { GiRoad } from 'react-icons/gi';
 import { HiLocationMarker, HiOutlineUserGroup } from 'react-icons/hi';
-
-// component
-import SvgColor from '../../../components/svg-color';
 
 const navConfig = [
   {
@@ -18,6 +15,11 @@ const navConfig = [
     title: 'user',
     path: '/dashboard/user',
     icon: <HiOutlineUserGroup color="#F4F4F4" size={25} />,
+  },
+  {
+    title: 'App Version',
+    path: '/dashboard/version',
+    icon: <AiOutlineMobile color="#F4F4F4" size={25} />,
   },
   {
     title: 'Building Management',

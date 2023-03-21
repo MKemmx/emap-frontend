@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Button, Box, Typography, Container } from '@mui/material';
+import { Box, Typography, Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+// Components
+import DownloadModal from './DownloadModal';
 // import { homeStyle } from './landingPageStyle.ts';
 import HomeBannerImage from './images/HomeImage';
 
@@ -46,9 +48,10 @@ const Home = () => {
             An app wherein EVSU students, employees, and visitors can track their location, browse over the directories
             of the evsu main campus and trace possible routes to their destination inside the university.
           </Typography>
-          <Button style={{ background: '#900303' }} variant="contained">
+          {/* <Button onClick={handleDownload} style={{ background: '#900303' }} variant="contained">
             Download
-          </Button>
+          </Button> */}
+          <DownloadModal />
         </Box>
         <Box
           sx={{

@@ -3,10 +3,6 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard';
 import LandingPageLayout from './layouts/landingPage';
 
-// Unused Routes
-// import BlogPage from './pages/BlogPage';
-// import ProductsPage from './pages/ProductsPage';
-
 // Auth Page and Fallback
 import LoginPage from './pages/LoginPage/LoginPage';
 import Page404 from './pages/Page404/Page404';
@@ -22,6 +18,7 @@ import RoomPage from './pages/RoomPage/RoomPage';
 import RoomCoordinatePage from './pages/RoomCoordinatePage/RoomCoordinatePage';
 import AuditTrailPage from './pages/AuditTrailPage/AuditTrailPage';
 import MapPage from './pages/MapPage/MapPage';
+import AppVersion from './pages/AppVersionPage/AppVersionPage';
 import Settings from './pages/Settings/Settings';
 
 // Landing Page
@@ -61,6 +58,7 @@ export default function Router() {
         { path: 'room-coordinate', element: <RoomCoordinatePage /> },
         { path: 'audit-trail', element: <AuditTrailPage /> },
         { path: 'map', element: <MapPage /> },
+        { path: 'version', element: <AppVersion /> },
         { path: 'settings', element: <Settings /> },
       ],
     },
