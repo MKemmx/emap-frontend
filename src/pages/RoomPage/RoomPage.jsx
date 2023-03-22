@@ -70,6 +70,13 @@ export default function RoomPage() {
       editable: false,
     },
     {
+      field: 'floorNumber',
+      headerName: 'Floor Number',
+      minWidth: 150,
+      flex: 1,
+      editable: false,
+    },
+    {
       field: '',
       headerName: 'Actions',
       minWidth: 120,
