@@ -4,8 +4,9 @@ import axios from 'axios';
 import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 // Hooks
 import useFetch from '../../hooks/useFetch';
-// Components
-import EventsImage from './images/Events';
+
+// Image
+import DownloadImage from '../../Image/mobile-app-download.svg';
 
 const DownloadModal = () => {
   const [open, setOpen] = useState(false);
@@ -33,32 +34,35 @@ const DownloadModal = () => {
       </Button>
 
       <Dialog width="100%" maxWidth="lg" open={open} onClose={closeModal} scroll="paper">
-        <DialogTitle> Emap Mobile </DialogTitle>
+        <DialogTitle> Emap Mobile Download Link </DialogTitle>
         <DialogContent dividers>
-          <Box>
-            <EventsImage />
+          <Box
+            mb={2}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '0 2rem',
+            }}
+          >
+            <img
+              style={{
+                width: '100%',
+                maxWidth: '400px',
+              }}
+              src={DownloadImage}
+              alt="download-pic"
+            />
           </Box>
 
           <Box mb={1}>
-            <Typography variant="h4" gutterBottom>
-              asd
+            <Typography mb="0" variant="h6" gutterBottom>
+              Additional Information
             </Typography>
-          </Box>
 
-          <Box display="flex" alignItems="center" mb={1}>
-            <Typography gutterBottom>sdasd</Typography>
-            {/* <Box ml={1.5}>
-              <Typography style={{ lineHeight: '15px' }} variant="subtitle1" mb={0} gutterBottom>
-                {dayjs(selectedEvent?.start).format('LL')}
-              </Typography>
-              <Typography style={{ fontWeight: 500 }} variant="subtitle2" mb={0} gutterBottom>
-                {dayjs(selectedEvent?.start).format('LTS')}
-              </Typography>
-            </Box> */}
-          </Box>
-
-          <Box>
-            <Typography gutterBottom>sdasd</Typography>
+            <Typography variant="p" gutterBottom>
+              Required Android OS Android 4.1 or Later.
+            </Typography>
           </Box>
         </DialogContent>
         <DialogActions sx={{ padding: '1rem', display: 'flex', flexDirection: 'column', rowGap: '0.5rem' }}>
