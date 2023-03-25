@@ -6,7 +6,7 @@ export const getAllRoom = async () => {
   const roomOptions = data.room.map((item) => {
     return {
       _id: item._id,
-      label: item.name,
+      label: `${item.name} || ${item?.buildingId?.name} `,
     };
   });
 

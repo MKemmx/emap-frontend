@@ -99,6 +99,7 @@ const RoomCoordinatePageModal = ({ closeModal, openAddModal, editData, reFetchDa
     async function fetchBuildingMenu() {
       setLoadingBuildingMenu(true);
       const buildingOptions = await getAllRoom();
+
       setBuildingMenu(buildingOptions);
       setLoadingBuildingMenu(false);
 

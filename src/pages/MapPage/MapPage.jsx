@@ -55,6 +55,9 @@ const MapPage = () => {
   return (
     <Box py={5} sx={{ width: '100%', height: '85vh' }}>
       <Map
+        onClick={(e) => {
+          console.log(`Latitude: ${e.lngLat.lat}, Longitude: ${e.lngLat.lng}`);
+        }}
         rest
         mapboxAccessToken="pk.eyJ1Ijoia2NwaGlsaXAiLCJhIjoiY2w3Njk4NmZwMXltMTNucng1czdhMGo0aiJ9.rsKrbG0IARxPZrUfSqSrKA"
         initialViewState={{
@@ -68,8 +71,8 @@ const MapPage = () => {
           bearing: 180,
           maxBounds: restrictCoordinate,
         }}
-        style={{ width: '100%', minHeight: '500px', height: '100%' }}
         mapStyle="mapbox://styles/chryzxc/cjou70fxh5cwm2rn09outswx2"
+        style={{ width: '100%', minHeight: '500px', height: '100%' }}
         onLoad={handleMapLoad}
         ref={mapRef}
       >
