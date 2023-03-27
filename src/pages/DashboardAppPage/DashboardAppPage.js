@@ -58,7 +58,6 @@ export default function DashboardAppPage() {
       try {
         setLoading(true);
         const { data } = await axios.get('/dashboard');
-
         const analyticsCopy = [...downloadAnalytics];
         data?.data?.download?.forEach(({ downloadDate }) => {
           const monthName = new Date(downloadDate).toLocaleString('default', { month: 'long' });
@@ -80,10 +79,6 @@ export default function DashboardAppPage() {
   const handleChangeRoute = (link) => {
     navigate(`/dashboard/${link}`);
   };
-
-  useEffect(() => {
-    console.log(downloadAnalytics);
-  }, [downloadAnalytics]);
 
   return (
     <>

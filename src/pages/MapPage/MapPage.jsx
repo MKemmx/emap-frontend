@@ -71,7 +71,7 @@ const MapPage = () => {
           bearing: 180,
           maxBounds: restrictCoordinate,
         }}
-        mapStyle="mapbox://styles/chryzxc/cjou70fxh5cwm2rn09outswx2"
+        mapStyle="mapbox://styles/kcphilip/clfqhgcji000d01sb4noh8oc7/draft"
         style={{ width: '100%', minHeight: '500px', height: '100%' }}
         onLoad={handleMapLoad}
         ref={mapRef}
